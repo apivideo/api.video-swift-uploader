@@ -1,0 +1,7 @@
+use_frameworks!
+target 'VideoUploaderIos_Tests' do
+  pod 'VideoUploaderIos', :path => '../'
+  
+  pod 'Quick', '~> 2.2.0'
+  pod 'Nimble', '~> 9.0.1'
+end

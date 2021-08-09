@@ -1,0 +1,27 @@
+PODS:
+  - Nimble (9.0.1)
+  - Quick (2.2.1)
+  - VideoUploaderIos (0.1.0)
+
+DEPENDENCIES:
+  - Nimble (~> 9.0.1)
+  - Quick (~> 2.2.0)
+  - VideoUploaderIos (from `../`)
+
+SPEC REPOS:
+  trunk:
+    - Nimble
+    - Quick
+
+EXTERNAL SOURCES:
+  VideoUploaderIos:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  Nimble: 7bed62ffabd6dbfe05f5925cbc43722533248990
+  Quick: f5754d69b7013f5864c29aab9ae6f0c79c5bc200
+  VideoUploaderIos: 1d4030a68a67a5c629ef828bdc31ff1cca3f3864
+
+PODFILE CHECKSUM: 76527896bd7398adfe97a9831371340404fe8331
+
+COCOAPODS: 1.10.1

@@ -1,0 +1,12 @@
+name: Run unit tests
+on: [push]
+jobs:
+  test:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Test
+        run: |
+          cd Example
+          pod install
+          ./run-tests-with-api-key.sh ${{ secrets.DELEGATED_TOKEN }}

@@ -1,66 +1,38 @@
-// https://github.com/Quick/Quick
-
-import Quick
-import Nimble
+import XCTest
 import VideoUploaderIos
  
-class TableOfContentsSpec: QuickSpec {
-    override func spec() {
-        setenv("CFNETWORK_DIAGNOSTICS", "3", 1)
+class TableOfContentsSpec: XCTestCase {
+    
+    func getDelegatedToken() -> String? {
+        let DELEGATED_TOKEN: String? = nil // YOUR DELEGATED UPLOAD TOKEN HERE
+        return ProcessInfo.processInfo.environment["DELEGATED_TOKEN"] ?? DELEGATED_TOKEN;
+    }
+    
+    func testSmallUploadSuccess() throws {
+        let uploader = VideoUploader()
         
-        describe("these will fail") {
-            let uploader = VideoUploader()
-            
-            let filename = "574k.mp4"
-            let bundle = Bundle(for: type(of: self))
-            let filepath = bundle.path(forResource: "574k", ofType: "mp4")!
-            let url = bundle.url(forResource: "574k", withExtension: "mp4")
-             
-            print(filepath)
-            print(url)
-            
-            uploader.uploadWithDelegatedToken(delegatedToken: "to3JdOSDHqqrB5Cd9Fi5Vc1I", fileName: filename, filePath: filepath, url: url!) { json, error in
-                print(error)
-                print(json)
-            }
-            /*it("can do maths") {
-                
-                expect(1) == 2
-            }
-
-            it("can read") {
-                expect("number") == "string"
-            }
-
-            it("will eventually fail") {
-                expect("time").toEventually( equal("done") )
-            }
-            
-            context("these will pass") {
-
-                it("can do maths") {
-                    expect(23) == 23
-                }
-
-                it("can read") {
-                    expect("🐮") == "🐮"
-                }
-
-                it("will eventually pass") {
-                    var time = "passing"
-
-                    DispatchQueue.main.async {
-                        time = "done"
-                    }
-
-                    waitUntil { done in
-                        Thread.sleep(forTimeInterval: 0.5)
-                        expect(time) == "done"
-
-                        done()
-                    }
-                }
-            }*/
+        let filename = "574k.mp4"
+        let bundle = Bundle(for: type(of: self))
+        let filepath = bundle.path(forResource: "574k", ofType: "mp4")!
+        let url = bundle.url(forResource: "574k", withExtension: "mp4")
+         
+        uploader.uploadWithDelegatedToken(delegatedToken: self.getDelegatedToken()!, fileName: filename, filePath: filepath, url: url!) { json, error in
+            XCTAssertNotNil(json)
+            XCTAssertNil(error)
+        }
+    }
+    
+    func testLargeUploadSuccess() throws {
+        let uploader = VideoUploader(chunkSize: 5*1024*1024)
+        
+        let filename = "10m.mp4"
+        let bundle = Bundle(for: type(of: self))
+        let filepath = bundle.path(forResource: "10m", ofType: "mp4")!
+        let url = bundle.url(forResource: "10m", withExtension: "mp4")
+         
+        uploader.uploadWithDelegatedToken(delegatedToken: self.getDelegatedToken()!, fileName: filename, filePath: filepath, url: url!) { json, error in
+            XCTAssertNotNil(json)
+            XCTAssertNil(error)
         }
     }
 }

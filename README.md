@@ -9,10 +9,10 @@ This module is an easy way to upload video file to the api.video platform
 
 1. Add the following entry to your Podfile:
 ```swift
-pod ‘IosVideoUploader’
+pod ‘VideoUploaderIos’
 ```
 3. Then run `pod install`
-4. Don’t forget to import ‘IosVideoUploader’ in every file you’d like to use api.video video uploader library
+4. Don’t forget to import ‘VideoUploaderIos’ in every file you’d like to use api.video video uploader library
 
 
 ### FAQ

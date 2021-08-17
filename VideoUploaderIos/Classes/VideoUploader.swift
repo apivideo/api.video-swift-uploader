@@ -8,16 +8,18 @@ public class VideoUploader {
     private var token: String! = ""
     private var tokenType: String! = "Bearer"
     
-    private static let DEFAULT_CHUNK_SIZE = 1024 * 1024 * 5;
-    private static let DEFAULT_USER_AGENT = "api.video uploader (ios; v:0.0.1; )";
+    private static let MIN_CHUNK_SIZE = 1024 * 1024 * 5;
+    private static let MAX_CHUNK_SIZE = 1024 * 1024 * 128;
+    private static let DEFAULT_CHUNK_SIZE = 1024 * 1024 * 50;
+    private static let DEFAULT_USER_AGENT = "api.video uploader (ios; v:0.0.2; )";
     
     public init(host: String? = nil, chunkSize: Int? = nil, userAgent: String? = nil){
         self.host = host ?? "ws.api.video";
         self.chunkSize = chunkSize ?? VideoUploader.DEFAULT_CHUNK_SIZE
         self.userAgent = userAgent ?? VideoUploader.DEFAULT_USER_AGENT
         
-        if(self.chunkSize < VideoUploader.DEFAULT_CHUNK_SIZE) {
-            print("Given chunk size is below the minimal allowed value. The default value will be used.");
+        if(self.chunkSize < VideoUploader.MIN_CHUNK_SIZE || self.chunkSize > VideoUploader.MAX_CHUNK_SIZE) {
+            print("Invalid chunk size value. Must be greater than 5MB bytes and lower than 128MB. The default value (50MB) will be used.");
             self.chunkSize = VideoUploader.DEFAULT_CHUNK_SIZE;
         }
     }

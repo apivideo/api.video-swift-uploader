@@ -11,7 +11,7 @@ public class VideoUploader {
     private static let MIN_CHUNK_SIZE = 1024 * 1024 * 5;
     private static let MAX_CHUNK_SIZE = 1024 * 1024 * 128;
     private static let DEFAULT_CHUNK_SIZE = 1024 * 1024 * 50;
-    private static let DEFAULT_USER_AGENT = "api.video uploader (ios; v:0.0.2; )";
+    private static let DEFAULT_USER_AGENT = "api.video uploader (ios; v:0.0.3; )";
     
     public init(host: String? = nil, chunkSize: Int? = nil, userAgent: String? = nil){
         self.host = host ?? "ws.api.video";
@@ -30,6 +30,64 @@ public class VideoUploader {
     
     public func uploadWithAuthentication(bearerToken: String, videoId: String, fileName: String, filePath: String, url: URL, completion: @escaping (Dictionary<String, AnyObject>?, ApiError?) -> ()) {
         self.upload(apiPath: "https://\(self.host)/videos/\(videoId)/source", bearerToken: bearerToken, fileName: fileName, filePath: filePath, url: url, completion: completion);
+    }
+    
+    public func uploadPartWithDelegatedToken(delegatedToken: String, videoId: String?, fileName: String, filePath: String, url: URL, byteStart: UInt64, isLast: Bool , completion: @escaping (Dictionary<String, AnyObject>?, ApiError?) -> ()) {
+        self.uploadPart(apiPath: "https://\(self.host)/upload?token=\(delegatedToken)", bearerToken: nil, videoId: videoId, fileName: fileName, filePath: filePath, url: url, byteStart: byteStart, isLast: isLast, completion: completion)
+    }
+        
+    public func uploadPartWithAuthentication(bearerToken: String, videoId: String, fileName: String, filePath: String, url: URL, byteStart: UInt64, isLast: Bool, completion: @escaping (Dictionary<String, AnyObject>?, ApiError?) -> ()) {
+        self.uploadPart(apiPath: "https://\(self.host)/videos/\(videoId)/source", bearerToken: bearerToken, videoId: nil, fileName: fileName, filePath: filePath, url: url, byteStart: byteStart, isLast: isLast, completion: completion)
+    }
+    
+    private func uploadPart(apiPath: String, bearerToken: String?, videoId: String?, fileName: String, filePath: String, url: URL, byteStart: UInt64, isLast: Bool, completion: @escaping (Dictionary<String, AnyObject>?, ApiError?) -> ()) {
+        
+        let fileSize = self.getFileSize(path: filePath)
+        
+        
+        let boundary = "Boundary-\(UUID().uuidString)";
+        
+        var urlRequest = URLRequest(url: URL(string: apiPath)!)
+        urlRequest.setValue(self.userAgent, forHTTPHeaderField: "User-Agent")
+        urlRequest.httpMethod = "POST"
+        
+        if(isLast) {
+            urlRequest.setValue("part \(byteStart)/\(byteStart)", forHTTPHeaderField: "Content-Range")
+        } else {
+            urlRequest.setValue("part \(byteStart)/*", forHTTPHeaderField: "Content-Range")
+        }
+        
+        if(bearerToken != nil) {
+            urlRequest.setValue("Bearer \(bearerToken ?? "")", forHTTPHeaderField: "Authorization")
+        }
+        
+        
+        let semaphore = DispatchSemaphore(value: 0)
+        let mimetype = mimeType(for: filePath)
+        
+        let fileStream = InputStream(fileAtPath: filePath)!
+        let multipartUploadInputStream = MultipartUploadInputStream(inputStream: fileStream, fileName: fileName, partName: "file", contentType: mimetype, chunkStart: Int64(0), chunkEnd: Int64(fileSize), semaphore: semaphore, videoId: videoId)
+        
+        urlRequest.addValue("multipart/form-data; boundary=\(multipartUploadInputStream.getBoundary())", forHTTPHeaderField: "Content-Type")
+        urlRequest.setValue(String(multipartUploadInputStream.getSize()), forHTTPHeaderField: "Content-Length")
+        
+        urlRequest.httpBodyStream = multipartUploadInputStream
+        
+         let sessionConfig = URLSessionConfiguration.default
+         sessionConfig.httpAdditionalHeaders = ["User-Agent": self.userAgent]
+         
+         let session = URLSession(configuration: sessionConfig)
+        
+        
+        TasksExecutor().execute(session: session, request: urlRequest){(json, apiError) in
+            if(json != nil){
+                completion(json, nil)
+            }else{
+                completion(nil, apiError)
+            }
+            semaphore.signal()
+        }
+        semaphore.wait()
     }
   
     private func upload(apiPath: String, bearerToken: String?, fileName: String, filePath: String, url: URL, completion: @escaping (Dictionary<String, AnyObject>?, ApiError?) -> ()) {
@@ -145,7 +203,7 @@ public class VideoUploader {
     }
     
     
-    private func getFileSize(path: String) -> UInt64 {
+    public func getFileSize(path: String) -> UInt64 {
         do {
             let attr = try FileManager.default.attributesOfItem(atPath: path)
             return attr[FileAttributeKey.size] as! UInt64

@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		0964D62226C129EC000F2B44 /* 574k.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 0964D62126C129EB000F2B44 /* 574k.mp4 */; };
 		0964D62A26C2C891000F2B44 /* 10m.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 0964D62926C2C891000F2B44 /* 10m.mp4 */; };
+		097DC1092733D23A00E67372 /* 10m.part.b.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 097DC1062733D23A00E67372 /* 10m.part.b.mp4 */; };
+		097DC10A2733D23A00E67372 /* 10m.part.c.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 097DC1072733D23A00E67372 /* 10m.part.c.mp4 */; };
+		097DC10B2733D23A00E67372 /* 10m.part.a.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 097DC1082733D23A00E67372 /* 10m.part.a.mp4 */; };
 		607FACEC1AFB9204008FA782 /* Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACEB1AFB9204008FA782 /* Tests.swift */; };
 		FB595D3A683D8688A590BE1D /* Pods_VideoUploaderIos_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AA0CE9748CBA698A77FDC5F /* Pods_VideoUploaderIos_Tests.framework */; };
 /* End PBXBuildFile section */
@@ -16,6 +19,9 @@
 /* Begin PBXFileReference section */
 		0964D62126C129EB000F2B44 /* 574k.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = 574k.mp4; sourceTree = "<group>"; };
 		0964D62926C2C891000F2B44 /* 10m.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = 10m.mp4; sourceTree = "<group>"; };
+		097DC1062733D23A00E67372 /* 10m.part.b.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = 10m.part.b.mp4; sourceTree = "<group>"; };
+		097DC1072733D23A00E67372 /* 10m.part.c.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = 10m.part.c.mp4; sourceTree = "<group>"; };
+		097DC1082733D23A00E67372 /* 10m.part.a.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = 10m.part.a.mp4; sourceTree = "<group>"; };
 		0F01E8C4CE80F34BBABB4F4C /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		4B4208673874AD05256294F4 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		607FACE51AFB9204008FA782 /* VideoUploaderIos_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VideoUploaderIos_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -61,6 +67,9 @@
 		607FACE81AFB9204008FA782 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				097DC1082733D23A00E67372 /* 10m.part.a.mp4 */,
+				097DC1062733D23A00E67372 /* 10m.part.b.mp4 */,
+				097DC1072733D23A00E67372 /* 10m.part.c.mp4 */,
 				0964D62926C2C891000F2B44 /* 10m.mp4 */,
 				0964D62126C129EB000F2B44 /* 574k.mp4 */,
 				607FACEB1AFB9204008FA782 /* Tests.swift */,
@@ -139,7 +148,7 @@
 					607FACE41AFB9204008FA782 = {
 						CreatedOnToolsVersion = 6.3.1;
 						DevelopmentTeam = CTF7CKPJ5B;
-						LastSwiftMigration = 0900;
+						LastSwiftMigration = 1300;
 					};
 				};
 			};
@@ -168,7 +177,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				0964D62A26C2C891000F2B44 /* 10m.mp4 in Resources */,
+				097DC10B2733D23A00E67372 /* 10m.part.a.mp4 in Resources */,
+				097DC10A2733D23A00E67372 /* 10m.part.c.mp4 in Resources */,
 				0964D62226C129EC000F2B44 /* 574k.mp4 in Resources */,
+				097DC1092733D23A00E67372 /* 10m.part.b.mp4 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -336,6 +348,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = AF86C80EA65D626D92E4A45F /* Pods-VideoUploaderIos_Tests.debug.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				DEVELOPMENT_TEAM = CTF7CKPJ5B;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
@@ -347,8 +360,13 @@
 				);
 				INFOPLIST_FILE = Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Tests",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
 			};
@@ -358,6 +376,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 784B7CD0C5E0E753B8507257 /* Pods-VideoUploaderIos_Tests.release.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				DEVELOPMENT_TEAM = CTF7CKPJ5B;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
@@ -365,6 +384,10 @@
 				);
 				INFOPLIST_FILE = Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Tests",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;

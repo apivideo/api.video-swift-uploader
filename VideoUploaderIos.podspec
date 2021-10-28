@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'VideoUploaderIos'
-  s.version          = '0.0.2'
+  s.version          = '0.0.3'
   s.summary          = 'A library to upload video files to api.video platform.'
 
 # This description is used to generate tags and improve search results.
@@ -18,7 +18,7 @@ Pod::Spec.new do |s|
 #   * Finally, don't worry about the indent, CocoaPods strips it!
 
   s.description      = <<-DESC
-  A library to upload video files to api.video platform. It manages splitting video files by chunks when uploading big files.
+  A library to upload video files to api.video platform. It manages splitting video files by chunks when uploading big files, as well as progressive uploads.
                       DESC
 
   s.homepage         = 'https://github.com/apivideo/VideoUploaderIos'

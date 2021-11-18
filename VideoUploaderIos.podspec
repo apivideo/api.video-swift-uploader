@@ -21,11 +21,11 @@ Pod::Spec.new do |s|
   A library to upload video files to api.video platform. It manages splitting video files by chunks when uploading big files.
                       DESC
 
-  s.homepage         = 'https://github.com/apivideo/VideoUploaderIos'
+  s.homepage         = 'https://github.com/apivideo/api.video-ios-uploader'
   # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'api.video ecosystem team' => 'ecosystem@api.video' }
-  s.source           = { :git => 'https://github.com/apivideo/VideoUploaderIos.git', :tag => s.version.to_s }
+  s.source           = { :git => 'https://github.com/apivideo/api.video-ios-uploader.git', :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
   s.ios.deployment_target = '9.0'

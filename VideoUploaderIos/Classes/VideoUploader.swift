@@ -33,7 +33,8 @@ public class VideoUploader {
     }
   
     private func upload(apiPath: String, bearerToken: String?, fileName: String, filePath: String, url: URL, completion: @escaping (Dictionary<String, AnyObject>?, ApiError?) -> ()) {
-        let fileSize = self.getFileSize(path: filePath)
+        let data = try? Data(contentsOf: url)
+        let fileSize = data!.count
         if(fileSize <= chunkSize) {
             self.uploadWithoutChunk(apiPath: apiPath, bearerToken: bearerToken, fileName: fileName, filePath: filePath, url: url, completion: completion)
         } else {
@@ -97,7 +98,7 @@ public class VideoUploader {
         let mimetype = mimeType(for: filePath)
         
         for offset in stride(from: 0, through: fileSize, by: chunkSize){
-            let fileStream = InputStream(fileAtPath: filePath)!
+            let fileStream = InputStream(url: url)!
             var chunkEnd = offset + chunkSize
             
             // if last chunk

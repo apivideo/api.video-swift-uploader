@@ -86,6 +86,8 @@ public class VideoUploader {
     }
     
     private func uploadByChunk(apiPath: String, bearerToken: String?, fileName: String, filePath: String, url: URL, completion: @escaping (Dictionary<String, AnyObject>?, ApiError?) -> ()) {
+        
+        var hasError: Bool = false
 
         let data = try? Data(contentsOf: url)
         let fileSize = data!.count
@@ -132,13 +134,19 @@ public class VideoUploader {
                     if(videoId == nil) {
                         videoId = json?["videoId"] as? String
                     }
-                    semaphore.signal()
+                    
                 }else{
                     completion(nil, apiError)
+                    hasError = true
                 }
+                semaphore.signal()
+                
             }
             semaphore.wait()
             fileStream.close()
+            if(hasError){
+                return
+            }
         }
         if(readBytes == fileSize){
             completion(video, nil)

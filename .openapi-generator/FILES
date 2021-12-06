@@ -1,5 +1,4 @@
 .gitignore
-.openapi-generator-ignore
 ApiVideoUploader.podspec
 Cartfile
 Package.swift

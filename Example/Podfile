@@ -1,4 +1,0 @@
-use_frameworks!
-target 'VideoUploaderIos_Tests' do
-  pod 'VideoUploaderIos', :path => '../'
-end

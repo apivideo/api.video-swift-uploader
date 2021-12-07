@@ -19,7 +19,7 @@
   - [Authorization](#documentation-for-authorization)
     - [API token](#api-token)
     - [Public endpoints](#public-endpoints)
-- [Have you gotten use from this API client?](#have-you-gotten-use-from-this-api-client-)
+- [Have you gotten use from this API client?](#have-you-gotten-use-from-this-api-client)
 - [Contribution](#contribution)
 
 # Project description
@@ -89,7 +89,7 @@ Method | HTTP request | Description
 
 
 
-## Documentation for Models
+## Models
 
  - [AccessToken](docs/AccessToken.md)
  - [AuthenticatePayload](docs/AuthenticatePayload.md)

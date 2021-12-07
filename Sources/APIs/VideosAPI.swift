@@ -89,15 +89,15 @@ open class VideosAPI {
             self.token = token
         }
         
-        public func uploadPart(file: URL, onProgressReady: ((Progress) -> Void)? = nil, apiResponseQueue: DispatchQueue = ApiVideoClient.apiResponseQueue, completion: @escaping ((_ data: Video?, _ error: Error?) -> Void)) -> URLSessionTask? {
+        public func uploadPart(file: URL, onProgressReady: ((Progress) -> Void)? = nil, apiResponseQueue: DispatchQueue = ApiVideoUploader.apiResponseQueue, completion: @escaping ((_ data: Video?, _ error: Error?) -> Void)) -> URLSessionTask? {
             return uploadPart(file: file, isLastPart: false, onProgressReady: onProgressReady, apiResponseQueue: apiResponseQueue, completion: completion)
         }
         
-        public func uploadLastPart(file: URL, onProgressReady: ((Progress) -> Void)? = nil, apiResponseQueue: DispatchQueue = ApiVideoClient.apiResponseQueue, completion: @escaping ((_ data: Video?, _ error: Error?) -> Void)) -> URLSessionTask? {
+        public func uploadLastPart(file: URL, onProgressReady: ((Progress) -> Void)? = nil, apiResponseQueue: DispatchQueue = ApiVideoUploader.apiResponseQueue, completion: @escaping ((_ data: Video?, _ error: Error?) -> Void)) -> URLSessionTask? {
             return uploadPart(file: file, isLastPart: true, onProgressReady: onProgressReady, apiResponseQueue: apiResponseQueue, completion: completion)
         }
         
-        private func uploadPart(file: URL, isLastPart: Bool, onProgressReady: ((Progress) -> Void)? = nil, apiResponseQueue: DispatchQueue = ApiVideoClient.apiResponseQueue, completion: @escaping ((_ data: Video?, _ error: Error?) -> Void)) -> URLSessionTask? {
+        private func uploadPart(file: URL, isLastPart: Bool, onProgressReady: ((Progress) -> Void)? = nil, apiResponseQueue: DispatchQueue = ApiVideoUploader.apiResponseQueue, completion: @escaping ((_ data: Video?, _ error: Error?) -> Void)) -> URLSessionTask? {
             do {
                 try fileReader.append(fileURL: file, isLastPart: isLastPart)
             } catch {
@@ -196,7 +196,7 @@ open class VideosAPI {
             if let fileSize = file.fileSize {
                 let diff = progress.totalUnitCount - Int64(nextChunk.chunk.maxSize)
                 progress.totalUnitCount = fileSize
-                progress.completedUnitCount = Int64((chunkId - 1) * ApiVideoClient.getChunkSize()) + progress.completedUnitCount - diff
+                progress.completedUnitCount = Int64((chunkId - 1) * ApiVideoUploader.getChunkSize()) + progress.completedUnitCount - diff
             }
             if let onProgressReady = onProgressReady {
                 onProgressReady(progress)
@@ -280,15 +280,15 @@ open class VideosAPI {
             self.videoId = videoId
         }
         
-        public func uploadPart(file: URL, onProgressReady: ((Progress) -> Void)? = nil, apiResponseQueue: DispatchQueue = ApiVideoClient.apiResponseQueue, completion: @escaping ((_ data: Video?, _ error: Error?) -> Void)) -> URLSessionTask? {
+        public func uploadPart(file: URL, onProgressReady: ((Progress) -> Void)? = nil, apiResponseQueue: DispatchQueue = ApiVideoUploader.apiResponseQueue, completion: @escaping ((_ data: Video?, _ error: Error?) -> Void)) -> URLSessionTask? {
             return uploadPart(file: file, isLastPart: false, onProgressReady: onProgressReady, apiResponseQueue: apiResponseQueue, completion: completion)
         }
         
-        public func uploadLastPart(file: URL, onProgressReady: ((Progress) -> Void)? = nil, apiResponseQueue: DispatchQueue = ApiVideoClient.apiResponseQueue, completion: @escaping ((_ data: Video?, _ error: Error?) -> Void)) -> URLSessionTask? {
+        public func uploadLastPart(file: URL, onProgressReady: ((Progress) -> Void)? = nil, apiResponseQueue: DispatchQueue = ApiVideoUploader.apiResponseQueue, completion: @escaping ((_ data: Video?, _ error: Error?) -> Void)) -> URLSessionTask? {
             return uploadPart(file: file, isLastPart: true, onProgressReady: onProgressReady, apiResponseQueue: apiResponseQueue, completion: completion)
         }
         
-        private func uploadPart(file: URL, isLastPart: Bool, onProgressReady: ((Progress) -> Void)? = nil, apiResponseQueue: DispatchQueue = ApiVideoClient.apiResponseQueue, completion: @escaping ((_ data: Video?, _ error: Error?) -> Void)) -> URLSessionTask? {
+        private func uploadPart(file: URL, isLastPart: Bool, onProgressReady: ((Progress) -> Void)? = nil, apiResponseQueue: DispatchQueue = ApiVideoUploader.apiResponseQueue, completion: @escaping ((_ data: Video?, _ error: Error?) -> Void)) -> URLSessionTask? {
             do {
                 try fileReader.append(fileURL: file, isLastPart: isLastPart)
             } catch {
@@ -382,7 +382,7 @@ open class VideosAPI {
             if let fileSize = file.fileSize {
                 let diff = progress.totalUnitCount - Int64(nextChunk.chunk.maxSize)
                 progress.totalUnitCount = fileSize
-                progress.completedUnitCount = Int64((chunkId - 1) * ApiVideoClient.getChunkSize()) + progress.completedUnitCount - diff
+                progress.completedUnitCount = Int64((chunkId - 1) * ApiVideoUploader.getChunkSize()) + progress.completedUnitCount - diff
             }
             if let onProgressReady = onProgressReady {
                 onProgressReady(progress)

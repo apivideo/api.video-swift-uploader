@@ -64,6 +64,7 @@ import ApiVideoUploader
             // Manage upload with upload token error here
         }
     }
+
 ```
 
 # Documentation

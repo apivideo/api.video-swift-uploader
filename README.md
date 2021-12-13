@@ -36,6 +36,12 @@ It allows you to upload videos in two ways:
 
 ### Carthage
 
+Specify it in your `Cartfile`:
+
+```
+github "apivideo/api.video-ios-uploader" ~> 0.1.0
+```
+
 Run `carthage update`
 
 ### CocoaPods

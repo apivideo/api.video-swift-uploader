@@ -33,6 +33,7 @@ Sources/SynchronizedDictionary.swift
 Sources/Upload/ChunkInputStream.swift
 Sources/Upload/FileChunksBuilder.swift
 Sources/Upload/FileReaders.swift
+Sources/Upload/ProgressiveUploadSessioning.swift
 docs/AccessToken.md
 docs/AuthenticatePayload.md
 docs/AuthenticationAPI.md

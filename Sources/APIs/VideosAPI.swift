@@ -78,7 +78,7 @@ open class VideosAPI {
         return ProgressiveUploadWithUploadTokenSession(token: token)
     }
    
-    open class ProgressiveUploadWithUploadTokenSession {
+    open class ProgressiveUploadWithUploadTokenSession: ProgressiveUploadSessioning {
         private var partId = 1
         private var fileReader = FilePartsReader()
         private var videoId: String? = nil
@@ -270,7 +270,7 @@ open class VideosAPI {
         return ProgressiveUploadSession(videoId: videoId)
     }
    
-    open class ProgressiveUploadSession {
+    open class ProgressiveUploadSession: ProgressiveUploadSessioning {
         private var partId = 1
         private var fileReader = FilePartsReader()
         

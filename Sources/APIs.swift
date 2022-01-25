@@ -5,10 +5,16 @@
 //
 
 import Foundation
+enum ApiVideoClientError: Error {
+    case invalidApplicationName
+}
+
 public class ApiVideoUploader {
+    private static let DEFAULT_USER_AGENT = "api.video uploader (iOS; v:0.1.3; )";
+
     public static var apiKey: String? = nil
     public static var basePath = "https://ws.api.video"
-    internal static var customHeaders: [String: String] = ["User-Agent": "api.video uploader (iOS; v:; )"]
+    internal  static var customHeaders:[String: String] = ["User-Agent": ApiVideoClient.DEFAULT_USER_AGENT]
     private static var chunkSize: Int = 50 * 1024 * 1024
     internal static var requestBuilderFactory: RequestBuilderFactory = AlamofireRequestBuilderFactory()
     internal static var credential = ApiVideoCredential()
@@ -26,6 +32,17 @@ public class ApiVideoUploader {
 
     public static func getChunkSize() -> Int {
         return ApiVideoUploader.chunkSize
+    }
+
+    public static func setApplicationName(applicationName: String) throws {
+        let pattern = #"^[\w\-.\/]{1,50}$"#
+        let regex = try! NSRegularExpression(pattern: pattern, options: .anchorsMatchLines)
+        let stringRange = NSRange(location: 0, length: applicationName.utf16.count)
+        let matches = regex.matches(in: applicationName, range: stringRange)
+        if(matches.isEmpty) {
+            throw ApiVideoClientError.invalidApplicationName
+        }
+        ApiVideoClient.customHeaders["User-Agent"] = ApiVideoClient.DEFAULT_USER_AGENT + " " + applicationName
     }
 }
 

@@ -39,14 +39,14 @@ It allows you to upload videos in two ways:
 Specify it in your `Cartfile`:
 
 ```
-github "apivideo/api.video-ios-uploader" ~> 0.1.2
+github "apivideo/api.video-ios-uploader" ~> 0.1.3
 ```
 
 Run `carthage update`
 
 ### CocoaPods
 
-Add `pod 'ApiVideoUploader', '0.1.2'` in your `Podfile`
+Add `pod 'ApiVideoUploader', '0.1.3'` in your `Podfile`
 
 Run `pod install`
 

@@ -4,8 +4,8 @@ Pod::Spec.new do |s|
   s.osx.deployment_target = '10.12'
   s.tvos.deployment_target = '10.0'
   s.watchos.deployment_target = '3.0'
-  s.version = '0.1.2'
-  s.source = { :git => 'https://github.com/apivideo/api.video-ios-uploader', :tag => 'v0.1.2' }
+  s.version = '0.1.3'
+  s.source = { :git => 'https://github.com/apivideo/api.video-ios-uploader', :tag => 'v0.1.3' }
   s.authors = { 'Ecosystem Team' => 'ecosystem@api.video' }
   s.license = { :type => 'MIT' }
   s.homepage = 'https://docs.api.video'

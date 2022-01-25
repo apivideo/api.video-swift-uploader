@@ -1,6 +1,9 @@
 # Changelog
 All changes to this project will be documented in this file.
 
+## [0.1.3] - 2022-01-24
+- Add applicationName parameter (to allow user agent extension)
+
 ## [0.1.2] - 2021-12-14
 - Set protocol for progressive upload session visibility to public
 

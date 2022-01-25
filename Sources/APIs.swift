@@ -5,7 +5,7 @@
 //
 
 import Foundation
-enum ApiVideoClientError: Error {
+enum ApiVideoUploaderError: Error {
     case invalidApplicationName
 }
 
@@ -14,7 +14,7 @@ public class ApiVideoUploader {
 
     public static var apiKey: String? = nil
     public static var basePath = "https://ws.api.video"
-    internal  static var customHeaders:[String: String] = ["User-Agent": ApiVideoClient.DEFAULT_USER_AGENT]
+    internal  static var customHeaders:[String: String] = ["User-Agent": ApiVideoUploader.DEFAULT_USER_AGENT]
     private static var chunkSize: Int = 50 * 1024 * 1024
     internal static var requestBuilderFactory: RequestBuilderFactory = AlamofireRequestBuilderFactory()
     internal static var credential = ApiVideoCredential()
@@ -40,9 +40,9 @@ public class ApiVideoUploader {
         let stringRange = NSRange(location: 0, length: applicationName.utf16.count)
         let matches = regex.matches(in: applicationName, range: stringRange)
         if(matches.isEmpty) {
-            throw ApiVideoClientError.invalidApplicationName
+            throw ApiVideoUploaderError.invalidApplicationName
         }
-        ApiVideoClient.customHeaders["User-Agent"] = ApiVideoClient.DEFAULT_USER_AGENT + " " + applicationName
+        ApiVideoUploader.customHeaders["User-Agent"] = ApiVideoUploader.DEFAULT_USER_AGENT + " " + applicationName
     }
 }
 

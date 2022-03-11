@@ -7,14 +7,15 @@
 import Foundation
 enum ApiVideoUploaderError: Error {
     case invalidApplicationName
+    case invalidApplicationVersion
+    case missingApplicationName
 }
 
 public class ApiVideoUploader {
-    private static let DEFAULT_USER_AGENT = "api.video uploader (iOS; v:0.1.3; )";
 
     public static var apiKey: String? = nil
     public static var basePath = "https://ws.api.video"
-    internal  static var customHeaders:[String: String] = ["User-Agent": ApiVideoUploader.DEFAULT_USER_AGENT]
+    internal  static var customHeaders:[String: String] = ["AV-Origin-Client": "ios-uploader:0.1.4"]
     private static var chunkSize: Int = 50 * 1024 * 1024
     internal static var requestBuilderFactory: RequestBuilderFactory = AlamofireRequestBuilderFactory()
     internal static var credential = ApiVideoCredential()
@@ -34,16 +35,38 @@ public class ApiVideoUploader {
         return ApiVideoUploader.chunkSize
     }
 
-    public static func setApplicationName(applicationName: String) throws {
-        let pattern = #"^[\w\-.\/]{1,50}$"#
+
+    public static func setApplicationName(applicationName: String, applicationVersion: String?) throws {
+        if(applicationName.isEmpty) {
+            if(applicationVersion != nil && !applicationVersion!.isEmpty) {
+                throw ApiVideoUploaderError.missingApplicationName
+            }
+            ApiVideoUploader.customHeaders["AV-Origin-App"] = nil
+            return
+        }
+
+        let pattern = #"^[\w\-]{1,50}$"#
         let regex = try! NSRegularExpression(pattern: pattern, options: .anchorsMatchLines)
         let stringRange = NSRange(location: 0, length: applicationName.utf16.count)
         let matches = regex.matches(in: applicationName, range: stringRange)
         if(matches.isEmpty) {
             throw ApiVideoUploaderError.invalidApplicationName
         }
-        ApiVideoUploader.customHeaders["User-Agent"] = ApiVideoUploader.DEFAULT_USER_AGENT + " " + applicationName
+
+        if(applicationVersion != nil && !applicationVersion!.isEmpty) {
+            let pattern2 = #"^[\w\-]{1,50}$"#
+            let regex2 = try! NSRegularExpression(pattern: pattern2, options: .anchorsMatchLines)
+            let stringRange2 = NSRange(location: 0, length: applicationVersion!.utf16.count)
+            let matches2 = regex2.matches(in: applicationVersion!, range: stringRange2)
+            if(matches2.isEmpty) {
+                throw ApiVideoUploaderError.invalidApplicationVersion
+            }
+            ApiVideoUploader.customHeaders["AV-Origin-App"] = applicationName + ":" + applicationVersion!
+            return
+        }
+        ApiVideoUploader.customHeaders["AV-Origin-App"] = applicationName
     }
+
 }
 
 open class RequestBuilder<T> {

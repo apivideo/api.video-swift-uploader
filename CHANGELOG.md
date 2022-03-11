@@ -1,6 +1,9 @@
 # Changelog
 All changes to this project will be documented in this file.
 
+## [0.1.4] - 2022-03-11
+- Add Origin identification headers
+
 ## [0.1.3] - 2022-01-24
 - Add applicationName parameter (to allow user agent extension)
 

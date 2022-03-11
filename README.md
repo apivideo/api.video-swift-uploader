@@ -24,7 +24,7 @@
 
 # Project description
 
-api.video's iOS uploader uploads videos to api.video using delegated upload token or API Key.
+api.video's iOS  uploads videos to api.video using delegated upload token or API Key.
 
 It allows you to upload videos in two ways:
 - standard upload: to send a whole video file in one go
@@ -39,14 +39,14 @@ It allows you to upload videos in two ways:
 Specify it in your `Cartfile`:
 
 ```
-github "apivideo/api.video-ios-uploader" ~> 0.1.3
+github "apivideo/api.video-ios-uploader" ~> 0.1.4
 ```
 
 Run `carthage update`
 
 ### CocoaPods
 
-Add `pod 'ApiVideoUploader', '0.1.3'` in your `Podfile`
+Add `pod 'ApiVideoUploader', '0.1.4'` in your `Podfile`
 
 Run `pod install`
 

@@ -17,7 +17,7 @@
     - [VideosAPI](#VideosAPI)
   - [Models](#models)
   - [Authorization](#documentation-for-authorization)
-    - [API token](#api-token)
+    - [API key](#api-key)
     - [Public endpoints](#public-endpoints)
 - [Have you gotten use from this API client?](#have-you-gotten-use-from-this-api-client)
 - [Contribution](#contribution)
@@ -59,8 +59,8 @@ import ApiVideoUploader
 
     // If you rather like to use the sandbox environment:
     // ApiVideoUploader.basePath = Environment.sandbox.rawValue
-    // If you rather like to upload with your "YOUR_API_TOKEN" (upload)
-    // ApiVideoUploader.apiKey = "YOUR_API_TOKEN"
+    // If you rather like to upload with your "YOUR_API_KEY" (upload)
+    // ApiVideoUploader.apiKey = "YOUR_API_KEY"
 
     VideosAPI.uploadWithUploadToken(token: "MY_VIDEO_TOKEN", file: url) { video, error in
         if let video = video {
@@ -114,12 +114,12 @@ Method | HTTP request | Description
 
 ## Documentation for Authorization
 
-### API token
+### API key
 
-Most endpoints required to be authenticated using the API token mechanism described in our [documentation](https://docs.api.video/reference#authentication).
-The access token generation mechanism is automatically handled by the client. All you have to do is provide an API token:
+Most endpoints required to be authenticated using the API key mechanism described in our [documentation](https://docs.api.video/reference#authentication).
+The access token generation mechanism is automatically handled by the client. All you have to do is provide an API key:
 ```swift
-ApiVideoUploader.apiKey = YOUR_API_TOKEN
+ApiVideoUploader.apiKey = YOUR_API_KEY
 ```
 
 ### Public endpoints

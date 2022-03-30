@@ -13,198 +13,6 @@ import AnyCodable
 open class VideosAPI {
 
     /**
-     Upload with an upload token
-     
-     - parameter token: (query) The unique identifier for the token you want to use to upload a video. 
-     - parameter file: (form) The path to the video you want to upload. 
-     - parameter onProgressReady: progress handler to receive request progress.
-     - parameter apiResponseQueue: The queue on which api response is dispatched.
-     - parameter completion: completion handler to receive the data and the error objects.
-     */
-    @discardableResult
-    open class func uploadWithUploadToken(token: String, file: URL, onProgressReady: ((Progress) -> Void)? = nil, apiResponseQueue: DispatchQueue = ApiVideoUploader.apiResponseQueue, completion: @escaping ((_ data: Video?, _ error: Error?) -> Void)) -> URLSessionTask? {
-        let fileReader: FileChunksReader
-        do {
-            fileReader = try FileChunksReader(fileURL: file.encodeToJSON() as! URL)
-        } catch {
-            completion(nil, error)
-            return nil
-        }
-        if (fileReader.getTotalNumberOfChunks() == 1) {
-            return uploadWithUploadTokenWithRequestBuilder(token: token, file: file, onProgressReady: onProgressReady).execute(apiResponseQueue) { result in
-                switch result {
-                case let .success(response):
-                    completion(response.body, nil)
-                case let .failure(error):
-                    completion(nil, error)
-                }
-            }
-        } else {
-            return uploadWithUploadToken(token: token, file: fileReader, onProgressReady: onProgressReady, apiResponseQueue: apiResponseQueue, completion: completion)
-        }
-    }
-
-    /**
-     Upload with an upload token
-     
-     - parameter token: (query) The unique identifier for the token you want to use to upload a video. 
-     - parameter file: (form) The reader that constains file chunks 
-     - parameter onProgressReady: progress handler to receive request progress.
-     - parameter apiResponseQueue: The queue on which api response is dispatched.
-     - parameter completion: completion handler to receive the data and the error objects.
-     */
-    @discardableResult
-    private class func uploadWithUploadToken(token: String, file: ChunksReader, videoId: String? = nil, onProgressReady: ((Progress) -> Void)? = nil, apiResponseQueue: DispatchQueue = ApiVideoUploader.apiResponseQueue, completion: @escaping ((_ data: Video?, _ error: Error?) -> Void)) -> URLSessionTask? {
-        return uploadWithUploadTokenWithRequestBuilder(token: token, file: file, videoId: videoId, onProgressReady: onProgressReady).execute(apiResponseQueue) { result in
-            switch result {
-            case let .success(response):
-                if (file.remainingNumberOfChunks == 0) {
-                    completion(response.body, nil)
-                } else {
-                    uploadWithUploadToken(token: token, file: file, videoId: response.body.videoId, onProgressReady: onProgressReady, apiResponseQueue: apiResponseQueue, completion: completion)
-                }
-            case let .failure(error):
-                completion(nil, error)
-            }
-        }
-    }
-
-    /**
-     * Create a progressive uploadWithUploadToken session
-     *
-     * - returns: a progressive uploadWithUploadToken session
-     */
-    open class func buildProgressiveUploadWithUploadTokenSession(token: String) -> ProgressiveUploadWithUploadTokenSession {
-        return ProgressiveUploadWithUploadTokenSession(token: token)
-    }
-   
-    open class ProgressiveUploadWithUploadTokenSession: ProgressiveUploadSessioning {
-        private var partId = 1
-        private var fileReader = FilePartsReader()
-        private var videoId: String? = nil
-        
-        private var token: String
-
-        public init(token: String) {
-            self.token = token
-        }
-        
-        public func uploadPart(file: URL, onProgressReady: ((Progress) -> Void)? = nil, apiResponseQueue: DispatchQueue = ApiVideoUploader.apiResponseQueue, completion: @escaping ((_ data: Video?, _ error: Error?) -> Void)) -> URLSessionTask? {
-            return uploadPart(file: file, isLastPart: false, onProgressReady: onProgressReady, apiResponseQueue: apiResponseQueue, completion: completion)
-        }
-        
-        public func uploadLastPart(file: URL, onProgressReady: ((Progress) -> Void)? = nil, apiResponseQueue: DispatchQueue = ApiVideoUploader.apiResponseQueue, completion: @escaping ((_ data: Video?, _ error: Error?) -> Void)) -> URLSessionTask? {
-            return uploadPart(file: file, isLastPart: true, onProgressReady: onProgressReady, apiResponseQueue: apiResponseQueue, completion: completion)
-        }
-        
-        private func uploadPart(file: URL, isLastPart: Bool, onProgressReady: ((Progress) -> Void)? = nil, apiResponseQueue: DispatchQueue = ApiVideoUploader.apiResponseQueue, completion: @escaping ((_ data: Video?, _ error: Error?) -> Void)) -> URLSessionTask? {
-            do {
-                try fileReader.append(fileURL: file, isLastPart: isLastPart)
-            } catch {
-                completion(nil, error)
-                return nil
-            }
-            return uploadWithUploadToken(token: self.token, file: fileReader, videoId: self.videoId, onProgressReady: onProgressReady, apiResponseQueue: apiResponseQueue, completion: { video, error in
-                if let video = video {
-                    self.videoId = video.videoId
-                }
-                completion(video, error)
-            })
-        }
-    }
-
-
-
-    /**
-     Upload with an upload token
-     - POST /upload
-     - This method allows you to send a video using an upload token. Upload tokens are especially useful when the upload is done from the client side. If you want to upload a video from your server-side application, you'd better use the [standard upload method](#upload).
-     - parameter token: (query) The unique identifier for the token you want to use to upload a video. 
-     - parameter file: (form) The path to the video you want to upload. 
-     - parameter onProgressReady: progress handler to receive request progress.
-     - returns: RequestBuilder<Video> 
-     */
-    open class func uploadWithUploadTokenWithRequestBuilder(token: String, file: URL, videoId: String? = nil, onProgressReady: ((Progress) -> Void)? = nil) -> RequestBuilder<Video> {
-        let localVariablePath = "/upload"
-        let localVariableURLString = ApiVideoUploader.basePath + localVariablePath
-        var localVariableFormParams: [String: Any?] = [
-            "file": file.encodeToJSON(),
-        ]
-        if (videoId != nil) {
-            localVariableFormParams["videoId"] = videoId
-        }
-        let localVariableNonNullParameters = APIHelper.rejectNil(localVariableFormParams)
-        let localVariableParameters = APIHelper.convertBoolToString(localVariableNonNullParameters)
-
-        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
-        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "token": token.encodeToJSON(),
-        ])
-
-        let localVariableNillableHeaders: [String: Any?] = [
-            "Content-Type": "multipart/form-data",
-        ]
-
-        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
-
-        let localVariableRequestBuilder: RequestBuilder<Video>.Type = ApiVideoUploader.requestBuilderFactory.getBuilder()
-
-        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, onProgressReady: onProgressReady)
-    }
-
-      /**
-     Upload with an upload token
-     - POST /upload
-     - This method allows you to send a video using an upload token. Upload tokens are especially useful when the upload is done from the client side. If you want to upload a video from your server-side application, you'd better use the [standard upload method](#upload).
-     - parameter token: (query) The unique identifier for the token you want to use to upload a video. 
-     - parameter file: (form) The path to the video you want to upload. 
-     - parameter onProgressReady: progress handler to receive request progress.
-     - returns: RequestBuilder<Video> 
-     */
-    private class func uploadWithUploadTokenWithRequestBuilder(token: String, file: ChunksReader, videoId: String? = nil, onProgressReady: ((Progress) -> Void)? = nil) -> RequestBuilder<Video> {
-        let localVariablePath = "/upload"
-        let localVariableURLString = ApiVideoUploader.basePath + localVariablePath
-        let nextChunk = file.getNextChunk()
-        var localVariableFormParams: [String: Any?] = [
-            "file": nextChunk.chunk
-        ]
-        if (videoId != nil) {
-            localVariableFormParams["videoId"] = videoId
-        }
-
-        let chunkId = nextChunk.index
-        let totalNumberOfChunks: Int? = file.getTotalNumberOfChunks()
-
-        let localVariableNonNullParameters = APIHelper.rejectNil(localVariableFormParams)
-        let localVariableParameters = APIHelper.convertBoolToString(localVariableNonNullParameters)
-
-        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
-        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "token": token.encodeToJSON(),
-        ])
-
-        var localVariableNillableHeaders: [String: Any?] = [
-            "Content-Type": "multipart/form-data",
-        ]
-        localVariableNillableHeaders["Content-Range"] = "part \(chunkId)/" +  (totalNumberOfChunks != nil ? "\(totalNumberOfChunks!)" : "*")
-
-        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
-
-        let localVariableRequestBuilder: RequestBuilder<Video>.Type = ApiVideoUploader.requestBuilderFactory.getBuilder()
-
-        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, onProgressReady: { progress in
-            if let fileSize = file.fileSize {
-                let diff = progress.totalUnitCount - Int64(nextChunk.chunk.maxSize)
-                progress.totalUnitCount = fileSize
-                progress.completedUnitCount = Int64((chunkId - 1) * ApiVideoUploader.getChunkSize()) + progress.completedUnitCount - diff
-            }
-            if let onProgressReady = onProgressReady {
-                onProgressReady(progress)
-            }
-        })
-    }
-
-    /**
      Upload a video
      
      - parameter videoId: (path) Enter the videoId you want to use to upload your video. 
@@ -404,6 +212,198 @@ The latter allows you to split a video source into X chunks and send those chunk
         let localVariableParameters = APIHelper.convertBoolToString(localVariableNonNullParameters)
 
         let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        var localVariableNillableHeaders: [String: Any?] = [
+            "Content-Type": "multipart/form-data",
+        ]
+        localVariableNillableHeaders["Content-Range"] = "part \(chunkId)/" +  (totalNumberOfChunks != nil ? "\(totalNumberOfChunks!)" : "*")
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<Video>.Type = ApiVideoUploader.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, onProgressReady: { progress in
+            if let fileSize = file.fileSize {
+                let diff = progress.totalUnitCount - Int64(nextChunk.chunk.maxSize)
+                progress.totalUnitCount = fileSize
+                progress.completedUnitCount = Int64((chunkId - 1) * ApiVideoUploader.getChunkSize()) + progress.completedUnitCount - diff
+            }
+            if let onProgressReady = onProgressReady {
+                onProgressReady(progress)
+            }
+        })
+    }
+
+    /**
+     Upload with an upload token
+     
+     - parameter token: (query) The unique identifier for the token you want to use to upload a video. 
+     - parameter file: (form) The path to the video you want to upload. 
+     - parameter onProgressReady: progress handler to receive request progress.
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects.
+     */
+    @discardableResult
+    open class func uploadWithUploadToken(token: String, file: URL, onProgressReady: ((Progress) -> Void)? = nil, apiResponseQueue: DispatchQueue = ApiVideoUploader.apiResponseQueue, completion: @escaping ((_ data: Video?, _ error: Error?) -> Void)) -> URLSessionTask? {
+        let fileReader: FileChunksReader
+        do {
+            fileReader = try FileChunksReader(fileURL: file.encodeToJSON() as! URL)
+        } catch {
+            completion(nil, error)
+            return nil
+        }
+        if (fileReader.getTotalNumberOfChunks() == 1) {
+            return uploadWithUploadTokenWithRequestBuilder(token: token, file: file, onProgressReady: onProgressReady).execute(apiResponseQueue) { result in
+                switch result {
+                case let .success(response):
+                    completion(response.body, nil)
+                case let .failure(error):
+                    completion(nil, error)
+                }
+            }
+        } else {
+            return uploadWithUploadToken(token: token, file: fileReader, onProgressReady: onProgressReady, apiResponseQueue: apiResponseQueue, completion: completion)
+        }
+    }
+
+    /**
+     Upload with an upload token
+     
+     - parameter token: (query) The unique identifier for the token you want to use to upload a video. 
+     - parameter file: (form) The reader that constains file chunks 
+     - parameter onProgressReady: progress handler to receive request progress.
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects.
+     */
+    @discardableResult
+    private class func uploadWithUploadToken(token: String, file: ChunksReader, videoId: String? = nil, onProgressReady: ((Progress) -> Void)? = nil, apiResponseQueue: DispatchQueue = ApiVideoUploader.apiResponseQueue, completion: @escaping ((_ data: Video?, _ error: Error?) -> Void)) -> URLSessionTask? {
+        return uploadWithUploadTokenWithRequestBuilder(token: token, file: file, videoId: videoId, onProgressReady: onProgressReady).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                if (file.remainingNumberOfChunks == 0) {
+                    completion(response.body, nil)
+                } else {
+                    uploadWithUploadToken(token: token, file: file, videoId: response.body.videoId, onProgressReady: onProgressReady, apiResponseQueue: apiResponseQueue, completion: completion)
+                }
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     * Create a progressive uploadWithUploadToken session
+     *
+     * - returns: a progressive uploadWithUploadToken session
+     */
+    open class func buildProgressiveUploadWithUploadTokenSession(token: String) -> ProgressiveUploadWithUploadTokenSession {
+        return ProgressiveUploadWithUploadTokenSession(token: token)
+    }
+   
+    open class ProgressiveUploadWithUploadTokenSession: ProgressiveUploadSessioning {
+        private var partId = 1
+        private var fileReader = FilePartsReader()
+        private var videoId: String? = nil
+        
+        private var token: String
+
+        public init(token: String) {
+            self.token = token
+        }
+        
+        public func uploadPart(file: URL, onProgressReady: ((Progress) -> Void)? = nil, apiResponseQueue: DispatchQueue = ApiVideoUploader.apiResponseQueue, completion: @escaping ((_ data: Video?, _ error: Error?) -> Void)) -> URLSessionTask? {
+            return uploadPart(file: file, isLastPart: false, onProgressReady: onProgressReady, apiResponseQueue: apiResponseQueue, completion: completion)
+        }
+        
+        public func uploadLastPart(file: URL, onProgressReady: ((Progress) -> Void)? = nil, apiResponseQueue: DispatchQueue = ApiVideoUploader.apiResponseQueue, completion: @escaping ((_ data: Video?, _ error: Error?) -> Void)) -> URLSessionTask? {
+            return uploadPart(file: file, isLastPart: true, onProgressReady: onProgressReady, apiResponseQueue: apiResponseQueue, completion: completion)
+        }
+        
+        private func uploadPart(file: URL, isLastPart: Bool, onProgressReady: ((Progress) -> Void)? = nil, apiResponseQueue: DispatchQueue = ApiVideoUploader.apiResponseQueue, completion: @escaping ((_ data: Video?, _ error: Error?) -> Void)) -> URLSessionTask? {
+            do {
+                try fileReader.append(fileURL: file, isLastPart: isLastPart)
+            } catch {
+                completion(nil, error)
+                return nil
+            }
+            return uploadWithUploadToken(token: self.token, file: fileReader, videoId: self.videoId, onProgressReady: onProgressReady, apiResponseQueue: apiResponseQueue, completion: { video, error in
+                if let video = video {
+                    self.videoId = video.videoId
+                }
+                completion(video, error)
+            })
+        }
+    }
+
+
+
+    /**
+     Upload with an upload token
+     - POST /upload
+     - This method allows you to send a video using an upload token. Upload tokens are especially useful when the upload is done from the client side. If you want to upload a video from your server-side application, you'd better use the [standard upload method](#upload).
+     - parameter token: (query) The unique identifier for the token you want to use to upload a video. 
+     - parameter file: (form) The path to the video you want to upload. 
+     - parameter onProgressReady: progress handler to receive request progress.
+     - returns: RequestBuilder<Video> 
+     */
+    open class func uploadWithUploadTokenWithRequestBuilder(token: String, file: URL, videoId: String? = nil, onProgressReady: ((Progress) -> Void)? = nil) -> RequestBuilder<Video> {
+        let localVariablePath = "/upload"
+        let localVariableURLString = ApiVideoUploader.basePath + localVariablePath
+        var localVariableFormParams: [String: Any?] = [
+            "file": file.encodeToJSON(),
+        ]
+        if (videoId != nil) {
+            localVariableFormParams["videoId"] = videoId
+        }
+        let localVariableNonNullParameters = APIHelper.rejectNil(localVariableFormParams)
+        let localVariableParameters = APIHelper.convertBoolToString(localVariableNonNullParameters)
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "token": token.encodeToJSON(),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            "Content-Type": "multipart/form-data",
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<Video>.Type = ApiVideoUploader.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, onProgressReady: onProgressReady)
+    }
+
+      /**
+     Upload with an upload token
+     - POST /upload
+     - This method allows you to send a video using an upload token. Upload tokens are especially useful when the upload is done from the client side. If you want to upload a video from your server-side application, you'd better use the [standard upload method](#upload).
+     - parameter token: (query) The unique identifier for the token you want to use to upload a video. 
+     - parameter file: (form) The path to the video you want to upload. 
+     - parameter onProgressReady: progress handler to receive request progress.
+     - returns: RequestBuilder<Video> 
+     */
+    private class func uploadWithUploadTokenWithRequestBuilder(token: String, file: ChunksReader, videoId: String? = nil, onProgressReady: ((Progress) -> Void)? = nil) -> RequestBuilder<Video> {
+        let localVariablePath = "/upload"
+        let localVariableURLString = ApiVideoUploader.basePath + localVariablePath
+        let nextChunk = file.getNextChunk()
+        var localVariableFormParams: [String: Any?] = [
+            "file": nextChunk.chunk
+        ]
+        if (videoId != nil) {
+            localVariableFormParams["videoId"] = videoId
+        }
+
+        let chunkId = nextChunk.index
+        let totalNumberOfChunks: Int? = file.getTotalNumberOfChunks()
+
+        let localVariableNonNullParameters = APIHelper.rejectNil(localVariableFormParams)
+        let localVariableParameters = APIHelper.convertBoolToString(localVariableNonNullParameters)
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "token": token.encodeToJSON(),
+        ])
 
         var localVariableNillableHeaders: [String: Any?] = [
             "Content-Type": "multipart/form-data",

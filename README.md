@@ -92,8 +92,8 @@ VideosAPI
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**uploadWithUploadToken**](docs/VideosAPI.md#uploadWithUploadToken) | **POST** /upload | Upload with an upload token
 [**upload**](docs/VideosAPI.md#upload) | **POST** /videos/{videoId}/source | Upload a video
+[**uploadWithUploadToken**](docs/VideosAPI.md#uploadWithUploadToken) | **POST** /upload | Upload with an upload token
 
 
 

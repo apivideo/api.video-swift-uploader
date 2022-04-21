@@ -1,6 +1,9 @@
 # Changelog
 All changes to this project will be documented in this file.
 
+## [0.1.5] - 2022-04-21
+- Fix `video.publishedAt` type
+
 ## [0.1.4] - 2022-03-11
 - Add Origin identification headers
 

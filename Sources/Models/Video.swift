@@ -21,7 +21,7 @@ public struct Video: Codable, Hashable {
     /** A description for the video content.  */
     public var description: String?
     /** The date and time the API created the video. Date and time are provided using ISO-8601 UTC format. */
-    public var publishedAt: String?
+    public var publishedAt: Date?
     /** The date and time the video was updated. Date and time are provided using ISO-8601 UTC format. */
     public var updatedAt: Date?
     /** One array of tags (each tag is a string) in order to categorize a video. Tags may include spaces.   */
@@ -39,7 +39,7 @@ public struct Video: Codable, Hashable {
     /** This lets you know whether mp4 is supported. If enabled, an mp4 URL will be provided in the response for the video.  */
     public var mp4Support: Bool?
 
-    public init(videoId: String, createdAt: Date? = nil, title: String? = nil, description: String? = nil, publishedAt: String? = nil, updatedAt: Date? = nil, tags: [String]? = nil, metadata: [Metadata]? = nil, source: VideoSource? = nil, assets: VideoAssets? = nil, playerId: String? = nil, _public: Bool? = nil, panoramic: Bool? = nil, mp4Support: Bool? = nil) {
+    public init(videoId: String, createdAt: Date? = nil, title: String? = nil, description: String? = nil, publishedAt: Date? = nil, updatedAt: Date? = nil, tags: [String]? = nil, metadata: [Metadata]? = nil, source: VideoSource? = nil, assets: VideoAssets? = nil, playerId: String? = nil, _public: Bool? = nil, panoramic: Bool? = nil, mp4Support: Bool? = nil) {
         self.videoId = videoId
         self.createdAt = createdAt
         self.title = title

@@ -36,7 +36,7 @@ public class ApiVideoUploader {
     }
 
 
-    public static func setApplicationName(applicationName: String, applicationVersion: String?) throws {
+    public static func setApplicationName(applicationName: String, applicationVersion: String? = nil) throws {
         if(applicationName.isEmpty) {
             if(applicationVersion != nil && !applicationVersion!.isEmpty) {
                 throw ApiVideoUploaderError.missingApplicationName
@@ -53,18 +53,18 @@ public class ApiVideoUploader {
             throw ApiVideoUploaderError.invalidApplicationName
         }
 
-        if(applicationVersion != nil && !applicationVersion!.isEmpty) {
-            let pattern2 = #"^[\w\-]{1,50}$"#
+        if let applicationVersion = applicationVersion, !applicationVersion.isEmpty {
+            let pattern2 = #"^\d{1,3}(\.\d{1,3}(\.\d{1,3})?)?$"#
             let regex2 = try! NSRegularExpression(pattern: pattern2, options: .anchorsMatchLines)
-            let stringRange2 = NSRange(location: 0, length: applicationVersion!.utf16.count)
-            let matches2 = regex2.matches(in: applicationVersion!, range: stringRange2)
+            let stringRange2 = NSRange(location: 0, length: applicationVersion.utf16.count)
+            let matches2 = regex2.matches(in: applicationVersion, range: stringRange2)
             if(matches2.isEmpty) {
                 throw ApiVideoUploaderError.invalidApplicationVersion
             }
-            ApiVideoUploader.customHeaders["AV-Origin-App"] = applicationName + ":" + applicationVersion!
-            return
+            ApiVideoUploader.customHeaders["AV-Origin-App"] = applicationName + ":" + applicationVersion
+        } else {
+            ApiVideoUploader.customHeaders["AV-Origin-App"] = applicationName
         }
-        ApiVideoUploader.customHeaders["AV-Origin-App"] = applicationName
     }
 
 }

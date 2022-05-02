@@ -131,9 +131,6 @@ The latter allows you to split a video source into X chunks and send those chunk
   Once all chunks have been sent, they are reaggregated to one source file. The video source is considered as "completely sent" when the "last" chunk is sent (i.e., the chunk that "completes" the upload).
 
 
-     - BASIC:
-       - type: http
-       - name: bearerAuth
      - parameter videoId: (path) Enter the videoId you want to use to upload your video. 
      - parameter file: (form) The path to the video you would like to upload. The path must be local. If you want to use a video from an online source, you must use the \\\&quot;/videos\\\&quot; endpoint and add the \\\&quot;source\\\&quot; parameter when you create a new video. 
      - parameter onProgressReady: progress handler to receive request progress.
@@ -186,9 +183,6 @@ The latter allows you to split a video source into X chunks and send those chunk
   Once all chunks have been sent, they are reaggregated to one source file. The video source is considered as "completely sent" when the "last" chunk is sent (i.e., the chunk that "completes" the upload).
 
 
-     - BASIC:
-       - type: http
-       - name: bearerAuth
      - parameter videoId: (path) Enter the videoId you want to use to upload your video. 
      - parameter file: (form) The path to the video you would like to upload. The path must be local. If you want to use a video from an online source, you must use the \\\&quot;/videos\\\&quot; endpoint and add the \\\&quot;source\\\&quot; parameter when you create a new video. 
      - parameter onProgressReady: progress handler to receive request progress.

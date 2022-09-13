@@ -13,7 +13,7 @@ enum ApiVideoUploaderError: Error {
 public class ApiVideoUploader {
     public static var apiKey: String? = nil
     public static var basePath = "https://ws.api.video"
-    internal static var customHeaders:[String: String] = ["AV-Origin-Client": "ios-uploader:1.0.0"]
+    internal static var customHeaders:[String: String] = ["AV-Origin-Client": "ios-uploader:1.0.1"]
     private static var chunkSize: Int = 50 * 1024 * 1024
     internal static var requestBuilderFactory: RequestBuilderFactory = AlamofireRequestBuilderFactory()
     internal static var credential = ApiVideoCredential()

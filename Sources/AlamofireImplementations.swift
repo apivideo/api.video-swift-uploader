@@ -31,8 +31,8 @@ open class AlamofireRequestBuilder<T>: RequestBuilder<T> {
      */
     open func createAlamofireSession(interceptor: RequestInterceptor? = nil) -> Alamofire.Session {
         let configuration = URLSessionConfiguration.default
-        configuration.timeoutIntervalForRequest = ApiVideoClient.timeout
-        configuration.timeoutIntervalForResource = ApiVideoClient.timeout
+        configuration.timeoutIntervalForRequest = ApiVideoUploader.timeout
+        configuration.timeoutIntervalForResource = ApiVideoUploader.timeout
         configuration.httpAdditionalHeaders = buildHeaders()
         return Alamofire.Session(configuration: configuration,
                                  interceptor: interceptor)

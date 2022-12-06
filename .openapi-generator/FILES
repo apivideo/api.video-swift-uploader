@@ -30,10 +30,10 @@ Sources/Models/VideoSourceLiveStream.swift
 Sources/Models/VideoSourceLiveStreamLink.swift
 Sources/OpenISO8601DateFormatter.swift
 Sources/SynchronizedDictionary.swift
-Sources/Upload/ChunkInputStream.swift
-Sources/Upload/FileChunksBuilder.swift
-Sources/Upload/FileReaders.swift
-Sources/Upload/ProgressiveUploadSessioning.swift
+Sources/Upload/FileChunkInputStream.swift
+Sources/Upload/ProgressiveUploadSessionProtocol.swift
+Sources/Upload/RequestTaskQueue.swift
+Sources/Upload/UploadChunkRequestTaskQueue.swift
 docs/AccessToken.md
 docs/AuthenticatePayload.md
 docs/AuthenticationAPI.md

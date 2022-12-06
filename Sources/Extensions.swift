@@ -186,3 +186,19 @@ extension HTTPURLResponse {
         return (200 ..< 300).contains(statusCode)
     }
 }
+
+extension URL {
+    var fileSize: Int64 {
+        get throws {
+            guard let fileSize = try FileManager.default.attributesOfItem(atPath: path)[.size] as? NSNumber else {
+                throw ParameterError.fileSizeNotAvailable
+            }
+            return fileSize.int64Value
+        }
+    }
+    var isMultiChunk: Bool {
+        get throws {
+            try fileSize > ApiVideoClient.getChunkSize()
+        }
+    }
+}

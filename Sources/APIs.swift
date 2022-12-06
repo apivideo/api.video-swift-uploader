@@ -5,19 +5,15 @@
 //
 
 import Foundation
-enum ApiVideoUploaderError: Error {
-    case invalidName
-    case invalidVersion
-}
-
 public class ApiVideoUploader {
     public static var apiKey: String? = nil
     public static var basePath = "https://ws.api.video"
-    internal static var customHeaders:[String: String] = ["AV-Origin-Client": "ios-uploader:1.0.1"]
+    internal static var customHeaders:[String: String] = ["AV-Origin-Client": "ios-uploader:1.1.0"]
     private static var chunkSize: Int = 50 * 1024 * 1024
     internal static var requestBuilderFactory: RequestBuilderFactory = AlamofireRequestBuilderFactory()
     internal static var credential = ApiVideoCredential()
     public static var apiResponseQueue: DispatchQueue = .main
+    public static var timeout: TimeInterval = 60
 
     public static func setChunkSize(chunkSize: Int) throws {
         if (chunkSize > 128 * 1024 * 1024) {
@@ -56,11 +52,11 @@ public class ApiVideoUploader {
 
     static func setName(key: String, name: String, version: String) throws {
         if(!isValidName(name: name)) {
-            throw ApiVideoUploaderError.invalidName
+            throw ParameterError.invalidName
         }
  
         if(!isValidVersion(version: version)) {
-            throw ApiVideoUploaderError.invalidVersion
+            throw ParameterError.invalidVersion
         }
         ApiVideoUploader.customHeaders[key] = name + ":" + version
     }
@@ -77,12 +73,13 @@ public class ApiVideoUploader {
 
 open class RequestBuilder<T> {
     var headers: [String: String]
-    public let parameters: [String: Any]?
+    public var parameters: [String: Any]?
     public let method: String
     public let URLString: String
+    public let requestTask: RequestTask = RequestTask()
 
     /// Optional block to obtain a reference to the request's progress instance when available.
-    public let onProgressReady: ((Progress) -> Void)?
+    public var onProgressReady: ((Progress) -> Void)?
 
     required public init(method: String, URLString: String, parameters: [String: Any]?, headers: [String: String] = [:], onProgressReady: ((Progress) -> Void)? = nil) {
         self.method = method
@@ -101,8 +98,8 @@ open class RequestBuilder<T> {
     }
 
     @discardableResult
-    open func execute(_ apiResponseQueue: DispatchQueue = ApiVideoUploader.apiResponseQueue, _ completion: @escaping (_ result: Swift.Result<Response<T>, ErrorResponse>) -> Void) -> URLSessionTask? {
-        return nil
+    open func execute(_ apiResponseQueue: DispatchQueue = ApiVideoUploader.apiResponseQueue, _ completion: @escaping (_ result: Swift.Result<Response<T>, ErrorResponse>) -> Void) -> RequestTask {
+        return requestTask
     }
 
     public func addHeader(name: String, value: String) -> Self {

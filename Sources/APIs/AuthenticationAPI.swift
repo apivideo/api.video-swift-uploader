@@ -20,7 +20,7 @@ open class AuthenticationAPI {
      - parameter completion: completion handler to receive the data and the error objects.
      */
     @discardableResult
-    open class func authenticate(authenticatePayload: AuthenticatePayload, apiResponseQueue: DispatchQueue = ApiVideoUploader.apiResponseQueue, completion: @escaping ((_ data: AccessToken?, _ error: Error?) -> Void)) -> URLSessionTask? {
+    open class func authenticate(authenticatePayload: AuthenticatePayload, apiResponseQueue: DispatchQueue = ApiVideoUploader.apiResponseQueue, completion: @escaping ((_ data: AccessToken?, _ error: Error?) -> Void)) -> RequestTask {
             return authenticateWithRequestBuilder(authenticatePayload: authenticatePayload).execute(apiResponseQueue) { result in
                 switch result {
                 case let .success(response):
@@ -66,7 +66,7 @@ open class AuthenticationAPI {
      - parameter completion: completion handler to receive the data and the error objects.
      */
     @discardableResult
-    open class func refresh(refreshTokenPayload: RefreshTokenPayload, apiResponseQueue: DispatchQueue = ApiVideoUploader.apiResponseQueue, completion: @escaping ((_ data: AccessToken?, _ error: Error?) -> Void)) -> URLSessionTask? {
+    open class func refresh(refreshTokenPayload: RefreshTokenPayload, apiResponseQueue: DispatchQueue = ApiVideoUploader.apiResponseQueue, completion: @escaping ((_ data: AccessToken?, _ error: Error?) -> Void)) -> RequestTask {
             return refreshWithRequestBuilder(refreshTokenPayload: refreshTokenPayload).execute(apiResponseQueue) { result in
                 switch result {
                 case let .success(response):

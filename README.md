@@ -39,14 +39,14 @@ It allows you to upload videos in two ways:
 Specify it in your `Cartfile`:
 
 ```
-github "apivideo/api.video-ios-uploader" ~> 1.0.1
+github "apivideo/api.video-ios-uploader" ~> 1.1.0
 ```
 
 Run `carthage update`
 
 ### CocoaPods
 
-Add `pod 'ApiVideoUploader', '1.0.1'` in your `Podfile`
+Add `pod 'ApiVideoUploader', '1.1.0'` in your `Podfile`
 
 Run `pod install`
 
@@ -62,7 +62,7 @@ import ApiVideoUploader
     // If you rather like to upload with your "YOUR_API_KEY" (upload)
     // ApiVideoUploader.apiKey = "YOUR_API_KEY"
 
-    VideosAPI.uploadWithUploadToken(token: "MY_VIDEO_TOKEN", file: url) { video, error in
+    try VideosAPI.uploadWithUploadToken(token: "MY_VIDEO_TOKEN", file: url) { video, error in
         if let video = video {
             // Manage upload with upload token success here
         }

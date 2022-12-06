@@ -198,7 +198,7 @@ extension URL {
     }
     var isMultiChunk: Bool {
         get throws {
-            try fileSize > ApiVideoClient.getChunkSize()
+            try fileSize > ApiVideoUploader.getChunkSize()
         }
     }
 }

@@ -1,6 +1,11 @@
 # Changelog
 All changes to this project will be documented in this file.
 
+## [1.1.1] - 2022-12-09
+- Fix on upload by chunk and progressive upload.
+- Add test on progressive upload.
+- Add a `build.yml` CI workflow.
+
 ## [1.1.0] - 2022-12-06
 - Refactor upload by chunk and progressive upload. It is now possible to cancel an upload.
 - Add timeout API

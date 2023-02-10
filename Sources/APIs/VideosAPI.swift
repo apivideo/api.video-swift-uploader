@@ -217,11 +217,11 @@ The latter allows you to split a video source into X chunks and send those chunk
      - parameter completion: completion handler to receive the data and the error objects.
      */
     @discardableResult
-    open class func uploadWithUploadToken(token: String, file: URL, onProgressReady: ((Progress) -> Void)? = nil, apiResponseQueue: DispatchQueue = ApiVideoUploader.apiResponseQueue, completion: @escaping ((_ data: Video?, _ error: Error?) -> Void)) throws -> RequestTask {
+    open class func uploadWithUploadToken(token: String, file: URL, videoId: String? = nil, onProgressReady: ((Progress) -> Void)? = nil, apiResponseQueue: DispatchQueue = ApiVideoUploader.apiResponseQueue, completion: @escaping ((_ data: Video?, _ error: Error?) -> Void)) throws -> RequestTask {
         if (try file.isMultiChunk) {
-            return try UploadChunkRequestTaskQueue(token: token, file: file, onProgressReady: onProgressReady, apiResponseQueue: apiResponseQueue, completion: completion)
+            return try UploadChunkRequestTaskQueue(token: token, file: file, videoId: videoId, onProgressReady: onProgressReady, apiResponseQueue: apiResponseQueue, completion: completion)
         } else {
-            return uploadWithUploadTokenWithRequestBuilder(token: token, file: file, onProgressReady: onProgressReady).execute(apiResponseQueue) { result in
+            return uploadWithUploadTokenWithRequestBuilder(token: token, file: file, videoId: videoId, onProgressReady: onProgressReady).execute(apiResponseQueue) { result in
                 switch result {
                 case let .success(response):
                     completion(response.body, nil)
@@ -237,7 +237,7 @@ The latter allows you to split a video source into X chunks and send those chunk
      *
      - returns: a progressive uploadWithUploadToken session
      */
-    public class func buildProgressiveUploadWithUploadTokenSession(token: String) -> ProgressiveUploadWithUploadTokenSession {
+    public class func buildProgressiveUploadWithUploadTokenSession(token: String, videoId: String? = nil) -> ProgressiveUploadWithUploadTokenSession {
         ProgressiveUploadWithUploadTokenSession(token: token)
     }
    
@@ -247,8 +247,9 @@ The latter allows you to split a video source into X chunks and send those chunk
         
         private let token: String
 
-        public init(token: String) {
+        public init(token: String, videoId: String? = nil) {
             self.token = token
+            self.videoId = videoId
             super.init(queueLabel: token)
         }
 
@@ -286,7 +287,9 @@ The latter allows you to split a video source into X chunks and send those chunk
             let requestBuilder = uploadWithUploadTokenWithRequestBuilder(token: token, file: file, videoId: videoId, chunkId: partId, numOfChunks: numOfChunks, onProgressReady: onProgressReady)
             execute(requestBuilder, apiResponseQueue: apiResponseQueue) { data, error in
                 if let data = data {
-                    self.videoId = data.videoId
+                    if self.videoId == nil {
+                        self.videoId = data.videoId
+                    }
                 }
                 completion(data, error)
             }

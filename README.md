@@ -93,7 +93,7 @@ VideosAPI
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**upload**](docs/VideosAPI.md#upload) | **POST** /videos/{videoId}/source | Upload a video
-[**uploadWithUploadToken**](docs/VideosAPI.md#uploadWithUploadToken) | **POST** /upload | Upload with an upload token
+[**uploadWithUploadToken**](docs/VideosAPI.md#uploadWithUploadToken) | **POST** /upload | Upload with an delegated upload token
 
 
 

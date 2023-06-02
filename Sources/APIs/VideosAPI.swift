@@ -208,7 +208,7 @@ The latter allows you to split a video source into X chunks and send those chunk
     }
 
     /**
-     Upload with an upload token
+     Upload with an delegated upload token
      
      - parameter token: (query) The unique identifier for the token you want to use to upload a video. 
      - parameter file: (form) The path to the video you want to upload. 
@@ -312,7 +312,7 @@ The latter allows you to split a video source into X chunks and send those chunk
 
 
     /**
-     Upload with an upload token
+     Upload with an delegated upload token
      - POST /upload
      - This method allows you to send a video using an upload token. Upload tokens are especially useful when the upload is done from the client side. If you want to upload a video from your server-side application, you'd better use the [standard upload method](#upload).
      - parameter token: (query) The unique identifier for the token you want to use to upload a video. 
@@ -355,7 +355,7 @@ The latter allows you to split a video source into X chunks and send those chunk
     }
 
       /**
-     Upload with an upload token
+     Upload with an delegated upload token
      - POST /upload
      - This method allows you to send a video using an upload token. Upload tokens are especially useful when the upload is done from the client side. If you want to upload a video from your server-side application, you'd better use the [standard upload method](#upload).
      - parameter token: (query) The unique identifier for the token you want to use to upload a video. 

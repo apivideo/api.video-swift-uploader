@@ -5,7 +5,7 @@ Package.swift
 README.md
 Sources/APIHelper.swift
 Sources/APIs.swift
-Sources/APIs/AuthenticationAPI.swift
+Sources/APIs/AdvancedAuthenticationAPI.swift
 Sources/APIs/VideosAPI.swift
 Sources/AlamofireImplementations.swift
 Sources/Auth/ApiVideoAuthenticator.swift
@@ -35,8 +35,8 @@ Sources/Upload/ProgressiveUploadSessionProtocol.swift
 Sources/Upload/RequestTaskQueue.swift
 Sources/Upload/UploadChunkRequestTaskQueue.swift
 docs/AccessToken.md
+docs/AdvancedAuthenticationAPI.md
 docs/AuthenticatePayload.md
-docs/AuthenticationAPI.md
 docs/BadRequest.md
 docs/Metadata.md
 docs/NotFound.md

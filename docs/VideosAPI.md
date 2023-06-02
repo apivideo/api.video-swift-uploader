@@ -5,7 +5,7 @@ All URIs are relative to *https://ws.api.video*
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**upload**](VideosAPI.md#postvideosvideoidsource) | **POST** /videos/{videoId}/source | Upload a video
-[**uploadWithUploadToken**](VideosAPI.md#postupload) | **POST** /upload | Upload with an upload token
+[**uploadWithUploadToken**](VideosAPI.md#postupload) | **POST** /upload | Upload with an delegated upload token
 
 
 # **upload**
@@ -84,7 +84,7 @@ Name | Type | Description  | Notes
     open class func uploadWithUploadToken(token: String, file: URL, completion: @escaping (_ data: Video?, _ error: Error?) -> Void)
 ```
 
-Upload with an upload token
+Upload with an delegated upload token
 
 This method allows you to send a video using an upload token. Upload tokens are especially useful when the upload is done from the client side. If you want to upload a video from your server-side application, you'd better use the [standard upload method](#upload).
 
@@ -97,7 +97,7 @@ import ApiVideoUploader
 let token = "token_example" // String | The unique identifier for the token you want to use to upload a video.
 let file = URL(string: "https://example.com")! // URL | The path to the video you want to upload.
 
-// Upload with an upload token
+// Upload with an delegated upload token
 VideosAPI.uploadWithUploadToken(token: token, file: file) { (response, error) in
     guard error == nil else {
         print(error)

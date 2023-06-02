@@ -1,11 +1,11 @@
-# AuthenticationAPI
+# AdvancedAuthenticationAPI
 
 All URIs are relative to *https://ws.api.video*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**authenticate**](AuthenticationAPI.md#postauthapikey) | **POST** /auth/api-key | Advanced - Authenticate (1/2)
-[**refresh**](AuthenticationAPI.md#postauthrefresh) | **POST** /auth/refresh | Advanced - Refresh token (2/2)
+[**authenticate**](AdvancedAuthenticationAPI.md#postauthapikey) | **POST** /auth/api-key | Get Bearer Token
+[**refresh**](AdvancedAuthenticationAPI.md#postauthrefresh) | **POST** /auth/refresh | Refresh Bearer Token
 
 
 # **authenticate**
@@ -13,9 +13,9 @@ Method | HTTP request | Description
     open class func authenticate(authenticatePayload: AuthenticatePayload, completion: @escaping (_ data: AccessToken?, _ error: Error?) -> Void)
 ```
 
-Advanced - Authenticate (1/2)
+Get Bearer Token
 
-To get started, submit your API key in the body of your request. api.video returns an access token that is valid for one hour (3600 seconds). A refresh token is also returned. View a [tutorial](https://api.video/blog/tutorials/authentication-tutorial) on authentication. All tutorials using the [authentication endpoint](https://api.video/blog/endpoints/authenticate)
+Returns a bearer token that can be used to authenticate other endpoint.  You can find the tutorial on using the disposable bearer token [here](https://docs.api.video/reference/disposable-bearer-token-authentication).
 
 
 ### Example
@@ -25,8 +25,8 @@ import ApiVideoUploader
 
 let authenticatePayload = authenticate-payload(apiKey: "apiKey_example") // AuthenticatePayload | 
 
-// Advanced - Authenticate (1/2)
-AuthenticationAPI.authenticate(authenticatePayload: authenticatePayload) { (response, error) in
+// Get Bearer Token
+AdvancedAuthenticationAPI.authenticate(authenticatePayload: authenticatePayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -64,9 +64,9 @@ No authorization required
     open class func refresh(refreshTokenPayload: RefreshTokenPayload, completion: @escaping (_ data: AccessToken?, _ error: Error?) -> Void)
 ```
 
-Advanced - Refresh token (2/2)
+Refresh Bearer Token
 
-Use the refresh endpoint with the refresh token you received when you first authenticated using the api-key endpoint. Send the refresh token in the body of your request. The api.video API returns a new access token that is valid for one hour (3600 seconds) and a new refresh token.  
+Accepts the old bearer token and returns a new bearer token that can be used to authenticate other endpoint.  You can find the tutorial on using the disposable bearer token [here](https://docs.api.video/reference/disposable-bearer-token-authentication).
 
 
 ### Example
@@ -76,8 +76,8 @@ import ApiVideoUploader
 
 let refreshTokenPayload = refresh-token-payload(refreshToken: "refreshToken_example") // RefreshTokenPayload | 
 
-// Advanced - Refresh token (2/2)
-AuthenticationAPI.refresh(refreshTokenPayload: refreshTokenPayload) { (response, error) in
+// Refresh Bearer Token
+AdvancedAuthenticationAPI.refresh(refreshTokenPayload: refreshTokenPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return

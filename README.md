@@ -100,6 +100,7 @@ Method | HTTP request | Description
 ## Models
 
  - [AccessToken](docs/AccessToken.md)
+ - [AdditionalBadRequestErrors](docs/AdditionalBadRequestErrors.md)
  - [AuthenticatePayload](docs/AuthenticatePayload.md)
  - [BadRequest](docs/BadRequest.md)
  - [Metadata](docs/Metadata.md)

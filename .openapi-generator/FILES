@@ -17,6 +17,7 @@ Sources/JSONDataEncoding.swift
 Sources/JSONEncodingHelper.swift
 Sources/Models.swift
 Sources/Models/AccessToken.swift
+Sources/Models/AdditionalBadRequestErrors.swift
 Sources/Models/AuthenticatePayload.swift
 Sources/Models/BadRequest.swift
 Sources/Models/Environment.swift
@@ -35,6 +36,7 @@ Sources/Upload/ProgressiveUploadSessionProtocol.swift
 Sources/Upload/RequestTaskQueue.swift
 Sources/Upload/UploadChunkRequestTaskQueue.swift
 docs/AccessToken.md
+docs/AdditionalBadRequestErrors.md
 docs/AdvancedAuthenticationAPI.md
 docs/AuthenticatePayload.md
 docs/BadRequest.md

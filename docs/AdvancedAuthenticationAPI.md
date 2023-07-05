@@ -23,7 +23,7 @@ Returns a bearer token that can be used to authenticate other endpoint.  You can
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import ApiVideoUploader
 
-let authenticatePayload = authenticate-payload(apiKey: "apiKey_example") // AuthenticatePayload | 
+let authenticatePayload = AuthenticatePayload(apiKey: "apiKey_example") // AuthenticatePayload | 
 
 // Get Bearer Token
 AdvancedAuthenticationAPI.authenticate(authenticatePayload: authenticatePayload) { (response, error) in
@@ -74,7 +74,7 @@ Accepts the old bearer token and returns a new bearer token that can be used to 
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import ApiVideoUploader
 
-let refreshTokenPayload = refresh-token-payload(refreshToken: "refreshToken_example") // RefreshTokenPayload | 
+let refreshTokenPayload = RefreshTokenPayload(refreshToken: "refreshToken_example") // RefreshTokenPayload | 
 
 // Refresh Bearer Token
 AdvancedAuthenticationAPI.refresh(refreshTokenPayload: refreshTokenPayload) { (response, error) in

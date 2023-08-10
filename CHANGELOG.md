@@ -1,6 +1,10 @@
 # Changelog
 All changes to this project will be documented in this file.
 
+## [1.2.1] - 2023-08-10
+- Add an API to upload with upload token and video id
+- Fix Models in documentation
+
 ## [1.1.1] - 2022-12-09
 - Fix on upload by chunk and progressive upload.
 - Add test on progressive upload.

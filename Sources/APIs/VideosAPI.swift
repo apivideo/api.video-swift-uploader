@@ -238,7 +238,7 @@ The latter allows you to split a video source into X chunks and send those chunk
      - returns: a progressive uploadWithUploadToken session
      */
     public class func buildProgressiveUploadWithUploadTokenSession(token: String, videoId: String? = nil) -> ProgressiveUploadWithUploadTokenSession {
-        ProgressiveUploadWithUploadTokenSession(token: token)
+        ProgressiveUploadWithUploadTokenSession(token: token, videoId: videoId)
     }
    
     public class ProgressiveUploadWithUploadTokenSession: RequestTaskQueue<Video>, ProgressiveUploadSessionProtocol {

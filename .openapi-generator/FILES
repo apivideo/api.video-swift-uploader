@@ -49,6 +49,7 @@ docs/VideoSource.md
 docs/VideoSourceLiveStream.md
 docs/VideoSourceLiveStreamLink.md
 docs/VideosAPI.md
+documentation.md
 git_push.sh
 post-generate.sh
 project.yml

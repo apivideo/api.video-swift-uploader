@@ -26,13 +26,13 @@ public struct Video: Codable, Hashable {
     public var updatedAt: Date?
     /** One array of tags (each tag is a string) in order to categorize a video. Tags may include spaces.   */
     public var tags: [String]?
-    /** Metadata you can use to categorise and filter videos. Metadata is a list of dictionaries, where each dictionary represents a key value pair for categorising a video. [Dynamic Metadata](https://api.video/blog/endpoints/dynamic-metadata) allows you to define a key that allows any value pair.  */
+    /** Metadata you can use to categorise and filter videos. Metadata is a list of dictionaries, where each dictionary represents a key value pair for categorising a video. [Dynamic Metadata](https://api.video/blog/endpoints/dynamic-metadata/) allows you to define a key that allows any value pair.  */
     public var metadata: [Metadata]?
     public var source: VideoSource?
     public var assets: VideoAssets?
     /** The id of the player that will be applied on the video.  */
     public var playerId: String?
-    /** Defines if the content is publicly reachable or if a unique token is needed for each play session. Default is true. Tutorials on [private videos](https://api.video/blog/endpoints/private-videos).  */
+    /** Defines if the content is publicly reachable or if a unique token is needed for each play session. Default is true. Tutorials on [private videos](https://api.video/blog/endpoints/private-videos/).  */
     public var _public: Bool?
     /** Defines if video is panoramic.  */
     public var panoramic: Bool?

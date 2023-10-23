@@ -1,6 +1,6 @@
 [![badge](https://img.shields.io/twitter/follow/api_video?style=social)](https://twitter.com/intent/follow?screen_name=api_video) &nbsp; [![badge](https://img.shields.io/github/stars/apivideo/api.video-swift-uploader?style=social)]() &nbsp; [![badge](https://img.shields.io/discourse/topics?server=https%3A%2F%2Fcommunity.api.video)](https://community.api.video)
 ![](https://github.com/apivideo/.github/blob/main/assets/apivideo_banner.png)
-<h1 align="center">api.video iOS uploader</h1>
+<h1 align="center">api.video Swift uploader</h1>
 
 [api.video](https://api.video) is the video infrastructure for product builders. Lightning fast video APIs for integrating, scaling, and managing on-demand & low latency live streaming features in your app.
 
@@ -24,7 +24,7 @@
 
 # Project description
 
-api.video's iOS  uploads videos to api.video using delegated upload token or API Key.
+api.video's Swift  for iOS, macOS and tvOS uploads videos to api.video using delegated upload token or API Key.
 
 It allows you to upload videos in two ways:
 - standard upload: to send a whole video file in one go
@@ -56,21 +56,17 @@ Please follow the [installation](#installation) instruction and execute the foll
 ```swift
 import ApiVideoUploader
 
+// If you rather like to use the sandbox environment:
+// ApiVideoUploader.basePath = Environment.sandbox.rawValue
 
-    // If you rather like to use the sandbox environment:
-    // ApiVideoUploader.basePath = Environment.sandbox.rawValue
-    // If you rather like to upload with your "YOUR_API_KEY" (upload)
-    // ApiVideoUploader.apiKey = "YOUR_API_KEY"
-
-    try VideosAPI.uploadWithUploadToken(token: "MY_VIDEO_TOKEN", file: url) { video, error in
-        if let video = video {
-            // Manage upload with upload token success here
-        }
-        if let error = error {
-            // Manage upload with upload token error here
-        }
+try VideosAPI.uploadWithUploadToken(token: "MY_VIDEO_TOKEN", file: url) { video, error in
+    if let video = video {
+        // Manage upload with upload token success here
     }
-
+    if let error = error {
+        // Manage upload with upload token error here
+    }
+}
 ```
 
 # Documentation
@@ -118,14 +114,14 @@ Method | HTTP request | Description
 ### API key
 
 Most endpoints required to be authenticated using the API key mechanism described in our [documentation](https://docs.api.video/reference#authentication).
-The access token generation mechanism is automatically handled by the client. All you have to do is provide an API key:
-```swift
-ApiVideoUploader.apiKey = YOUR_API_KEY
-```
+
+You must NOT store your API key in your application code to prevent your API key from being exposed in your source code.
+Only the [Public endpoints](#public-endpoints) can be called without authentication.
+In the case, you want to call an endpoint that requires authentication, you will have to use a backend server. See [Security best practices](https://docs.api.video/sdks/security) for more details.
 
 ### Public endpoints
 
-Some endpoints don't require authentication. These one can be called without setting `ApiVideoUploader.apiKey`:
+Some endpoints don't require authentication. These one can be called without setting `ApiVideoUploader.apiKey`.
 
 ## Have you gotten use from this API client?
 

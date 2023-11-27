@@ -115,6 +115,12 @@ extension String: CodingKey {
 
 }
 
+extension String {
+    func toBase64() -> String {
+         return Data(self.utf8).base64EncodedString()
+    }
+}
+
 extension KeyedEncodingContainerProtocol {
 
     public mutating func encodeArray<T>(_ values: [T], forKey key: Self.Key) throws where T: Encodable {

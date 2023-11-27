@@ -13,4 +13,3 @@ targets:
     scheme: {}
     dependencies:
     - carthage: AnyCodable
-    - carthage: Alamofire

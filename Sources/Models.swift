@@ -5,7 +5,6 @@
 //
 
 import Foundation
-import Alamofire
 
 protocol JSONEncodable {
     func encodeToJSON() -> Any
@@ -65,30 +64,31 @@ open class Response<T> {
 
 public class RequestTask {
     private var lock = NSRecursiveLock()
-    private var request: Request?
+    private var task: URLSessionTask?
 
-    internal func set(request: Request) {
+    internal func set(task: URLSessionTask) {
         lock.lock()
         defer { lock.unlock() }
-        self.request = request
+        self.task = task
     }
 
     public func cancel() {
         lock.lock()
         defer { lock.unlock() }
-        request?.cancel()
-        request = nil
+        task?.cancel()
+        task = nil
     }
 
-    public var state: Request.State {
-        request?.state ?? .initialized
+    public var isFinished: Bool {
+        guard let state = task?.state else {
+            return false
+        }
+        
+        return state == URLSessionTask.State.completed
     }
 
-    public var uploadProgress: Progress? {
-        request?.uploadProgress
-    }
-
-    public var downloadProgress: Progress? {
-        request?.downloadProgress
+    @available(iOS 11.0, macOS 10.13, macCatalyst 13.0, tvOS 11.0, watchOS 4.0, *)
+    public var progress: Progress? {
+        return task?.progress
     }
 }

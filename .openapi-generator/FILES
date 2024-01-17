@@ -7,9 +7,6 @@ Sources/APIHelper.swift
 Sources/APIs.swift
 Sources/APIs/AdvancedAuthenticationAPI.swift
 Sources/APIs/VideosAPI.swift
-Sources/AlamofireImplementations.swift
-Sources/Auth/ApiVideoAuthenticator.swift
-Sources/Auth/ApiVideoCredential.swift
 Sources/CodableHelper.swift
 Sources/Configuration.swift
 Sources/Extensions.swift
@@ -31,6 +28,7 @@ Sources/Models/VideoSourceLiveStream.swift
 Sources/Models/VideoSourceLiveStreamLink.swift
 Sources/OpenISO8601DateFormatter.swift
 Sources/SynchronizedDictionary.swift
+Sources/URLSessionImplementations.swift
 Sources/Upload/FileChunkInputStream.swift
 Sources/Upload/ProgressiveUploadSessionProtocol.swift
 Sources/Upload/RequestTaskQueue.swift

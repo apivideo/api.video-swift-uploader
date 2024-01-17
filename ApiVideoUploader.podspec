@@ -1,8 +1,8 @@
 Pod::Spec.new do |s|
   s.name = 'ApiVideoUploader'
-  s.ios.deployment_target = '10.0'
-  s.osx.deployment_target = '10.12'
-  s.tvos.deployment_target = '10.0'
+  s.ios.deployment_target = '9.0'
+  s.osx.deployment_target = '10.11'
+  s.tvos.deployment_target = '9.0'
   # Add back when CocoaPods/CocoaPods#11558 is released
   #s.watchos.deployment_target = '3.0'
   s.version = '1.2.2'
@@ -13,5 +13,4 @@ Pod::Spec.new do |s|
   s.summary = 'The official Swift api.video uploader for iOS, macOS and tvOS'
   s.source_files = 'Sources/**/*.swift'
   s.dependency 'AnyCodable-FlightSchool', '~> 0.6.1'
-  s.dependency 'Alamofire', '~> 5.4.3'
 end

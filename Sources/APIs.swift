@@ -6,16 +6,33 @@
 
 import Foundation
 public class ApiVideoUploader {
-    public static var apiKey: String? = nil
+    private static var apiKey: String? = nil
     public static var basePath = "https://ws.api.video"
-    internal static var customHeaders:[String: String] = ["AV-Origin-Client": "swift-uploader:1.2.2"]
+    internal static var defaultHeaders:[String: String] = ["AV-Origin-Client": "swift-uploader:1.2.2"]
+    internal static var credential: URLCredential?
     private static var chunkSize: Int = 50 * 1024 * 1024
-    internal static var requestBuilderFactory: RequestBuilderFactory = AlamofireRequestBuilderFactory()
-    internal static var credential = ApiVideoCredential()
+    internal static var requestBuilderFactory: RequestBuilderFactory = URLSessionRequestBuilderFactory()
     public static var apiResponseQueue: DispatchQueue = .main
+    
+    public static var backgroundIdentifier: String = "video.api.upload.background"
     public static var timeout: TimeInterval = 60
+    internal static var customHeaders:[String: String] {
+        var headers = defaultHeaders
+        if let apiKey = apiKey {
+            headers["Authorization"] = apiKey
+        }
+        return headers
+    }
 
-    public static func setChunkSize(chunkSize: Int) throws {
+    public static func setApiKey(_ apiKey: String?) {
+        if let apiKey = apiKey {
+            self.apiKey = "Basic " + "\(apiKey):".toBase64()
+        } else {
+            self.apiKey = nil
+        }
+    }
+
+    public static func setChunkSize(_ chunkSize: Int) throws {
         if (chunkSize > 128 * 1024 * 1024) {
             throw ParameterError.outOfRange
         } else if (chunkSize < 5 * 1024 * 1024) {
@@ -40,25 +57,25 @@ public class ApiVideoUploader {
         }
     }
 
-    static func isValidVersion(version: String) -> Bool {
+    static func isValidVersion(_ version: String) -> Bool {
         let pattern = #"^\d{1,3}(\.\d{1,3}(\.\d{1,3})?)?$"#
         return isValid(pattern: pattern, field: version)
     }
 
-    static func isValidName(name: String) -> Bool {
+    static func isValidName(_ name: String) -> Bool {
         let pattern = #"^[\w\-]{1,50}$"#
         return isValid(pattern: pattern, field: name)
     }
 
     static func setName(key: String, name: String, version: String) throws {
-        if(!isValidName(name: name)) {
+        if(!isValidName(name)) {
             throw ParameterError.invalidName
         }
  
-        if(!isValidVersion(version: version)) {
+        if(!isValidVersion(version)) {
             throw ParameterError.invalidVersion
         }
-        ApiVideoUploader.customHeaders[key] = name + ":" + version
+        ApiVideoUploader.defaultHeaders[key] = name + ":" + version
     }
 
     public static func setSdkName(name: String, version: String) throws {
@@ -68,10 +85,10 @@ public class ApiVideoUploader {
     public static func setApplicationName(name: String, version: String) throws {
         try setName(key: "AV-Origin-App", name: name, version: version)
     }
-
 }
 
 open class RequestBuilder<T> {
+    var credential: URLCredential?
     var headers: [String: String]
     public var parameters: [String: Any]?
     public let method: String
@@ -79,6 +96,8 @@ open class RequestBuilder<T> {
     public let requestTask: RequestTask = RequestTask()
 
     /// Optional block to obtain a reference to the request's progress instance when available.
+    /// With the URLSession http client the request's progress only works on iOS 11.0, macOS 10.13, macCatalyst 13.0, tvOS 11.0, watchOS 4.0.
+    /// If you need to get the request's progress in older OS versions, please use Alamofire http client.
     public var onProgressReady: ((Progress) -> Void)?
 
     required public init(method: String, URLString: String, parameters: [String: Any]?, headers: [String: String] = [:], onProgressReady: ((Progress) -> Void)? = nil) {
@@ -108,9 +127,15 @@ open class RequestBuilder<T> {
         }
         return self
     }
+
+    open func addCredential() -> Self {
+        credential = ApiVideoUploader.credential
+        return self
+    }
 }
 
 public protocol RequestBuilderFactory {
     func getNonDecodableBuilder<T>() -> RequestBuilder<T>.Type
     func getBuilder<T: Decodable>() -> RequestBuilder<T>.Type
+    func getBackgroundBuilder<T: Decodable>() -> RequestBuilder<T>.Type
 }

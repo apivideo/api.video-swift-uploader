@@ -24,6 +24,7 @@ Sources/Models/Environment.swift
 Sources/Models/Metadata.swift
 Sources/Models/NotFound.swift
 Sources/Models/RefreshTokenPayload.swift
+Sources/Models/TooManyRequests.swift
 Sources/Models/Video.swift
 Sources/Models/VideoAssets.swift
 Sources/Models/VideoSource.swift
@@ -43,6 +44,7 @@ docs/BadRequest.md
 docs/Metadata.md
 docs/NotFound.md
 docs/RefreshTokenPayload.md
+docs/TooManyRequests.md
 docs/Video.md
 docs/VideoAssets.md
 docs/VideoSource.md

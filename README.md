@@ -115,6 +115,7 @@ Method | HTTP request | Description
  - [Metadata](https://github.com/apivideo/api.video-swift-uploader/blob/main/docs/Metadata.md)
  - [NotFound](https://github.com/apivideo/api.video-swift-uploader/blob/main/docs/NotFound.md)
  - [RefreshTokenPayload](https://github.com/apivideo/api.video-swift-uploader/blob/main/docs/RefreshTokenPayload.md)
+ - [TooManyRequests](https://github.com/apivideo/api.video-swift-uploader/blob/main/docs/TooManyRequests.md)
  - [Video](https://github.com/apivideo/api.video-swift-uploader/blob/main/docs/Video.md)
  - [VideoAssets](https://github.com/apivideo/api.video-swift-uploader/blob/main/docs/VideoAssets.md)
  - [VideoSource](https://github.com/apivideo/api.video-swift-uploader/blob/main/docs/VideoSource.md)

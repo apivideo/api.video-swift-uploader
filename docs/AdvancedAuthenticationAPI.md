@@ -11,6 +11,7 @@ Method | HTTP request | Description
 # **authenticate**
 ```swift
     open class func authenticate(authenticatePayload: AuthenticatePayload, completion: @escaping (_ data: AccessToken?, _ error: Error?) -> Void)
+    open class func authenticate(authenticatePayload: AuthenticatePayload, completion: @escaping (_ result: Swift.Result<Response<AccessToken>, ErrorResponse>) -> Void)
 ```
 
 Get Bearer Token
@@ -62,6 +63,7 @@ No authorization required
 # **refresh**
 ```swift
     open class func refresh(refreshTokenPayload: RefreshTokenPayload, completion: @escaping (_ data: AccessToken?, _ error: Error?) -> Void)
+    open class func refresh(refreshTokenPayload: RefreshTokenPayload, completion: @escaping (_ result: Swift.Result<Response<AccessToken>, ErrorResponse>) -> Void)
 ```
 
 Refresh Bearer Token

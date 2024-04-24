@@ -21,14 +21,26 @@ open class AdvancedAuthenticationAPI {
      */
     @discardableResult
     open class func authenticate(authenticatePayload: AuthenticatePayload, apiResponseQueue: DispatchQueue = ApiVideoUploader.apiResponseQueue, completion: @escaping ((_ data: AccessToken?, _ error: Error?) -> Void)) -> RequestTask {
-            return authenticateWithRequestBuilder(authenticatePayload: authenticatePayload).execute(apiResponseQueue) { result in
-                switch result {
-                case let .success(response):
-                    completion(response.body, nil)
-                case let .failure(error):
-                    completion(nil, error)
-                }
+        return authenticate(authenticatePayload: authenticatePayload, apiResponseQueue: apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
             }
+        }
+    }
+
+    /**
+     Get Bearer Token
+     
+     - parameter authenticatePayload: (body)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the result of the request (incl. headers).
+     */
+    @discardableResult
+    open class func authenticate(authenticatePayload: AuthenticatePayload, apiResponseQueue: DispatchQueue = ApiVideoUploader.apiResponseQueue, completion: @escaping (_ result: Swift.Result<Response<AccessToken>, ErrorResponse>) -> Void) -> RequestTask {
+            return authenticateWithRequestBuilder(authenticatePayload: authenticatePayload).execute(apiResponseQueue, completion)
     }
 
 
@@ -39,7 +51,7 @@ open class AdvancedAuthenticationAPI {
      - parameter authenticatePayload: (body)  
      - returns: RequestBuilder<AccessToken> 
      */
-    open class func authenticateWithRequestBuilder(authenticatePayload: AuthenticatePayload) -> RequestBuilder<AccessToken> {
+    internal class func authenticateWithRequestBuilder(authenticatePayload: AuthenticatePayload) -> RequestBuilder<AccessToken> {
         let localVariablePath = "/auth/api-key"
         let localVariableURLString = ApiVideoUploader.basePath + localVariablePath
         let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: authenticatePayload)
@@ -67,14 +79,26 @@ open class AdvancedAuthenticationAPI {
      */
     @discardableResult
     open class func refresh(refreshTokenPayload: RefreshTokenPayload, apiResponseQueue: DispatchQueue = ApiVideoUploader.apiResponseQueue, completion: @escaping ((_ data: AccessToken?, _ error: Error?) -> Void)) -> RequestTask {
-            return refreshWithRequestBuilder(refreshTokenPayload: refreshTokenPayload).execute(apiResponseQueue) { result in
-                switch result {
-                case let .success(response):
-                    completion(response.body, nil)
-                case let .failure(error):
-                    completion(nil, error)
-                }
+        return refresh(refreshTokenPayload: refreshTokenPayload, apiResponseQueue: apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
             }
+        }
+    }
+
+    /**
+     Refresh Bearer Token
+     
+     - parameter refreshTokenPayload: (body)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the result of the request (incl. headers).
+     */
+    @discardableResult
+    open class func refresh(refreshTokenPayload: RefreshTokenPayload, apiResponseQueue: DispatchQueue = ApiVideoUploader.apiResponseQueue, completion: @escaping (_ result: Swift.Result<Response<AccessToken>, ErrorResponse>) -> Void) -> RequestTask {
+            return refreshWithRequestBuilder(refreshTokenPayload: refreshTokenPayload).execute(apiResponseQueue, completion)
     }
 
 
@@ -85,7 +109,7 @@ open class AdvancedAuthenticationAPI {
      - parameter refreshTokenPayload: (body)  
      - returns: RequestBuilder<AccessToken> 
      */
-    open class func refreshWithRequestBuilder(refreshTokenPayload: RefreshTokenPayload) -> RequestBuilder<AccessToken> {
+    internal class func refreshWithRequestBuilder(refreshTokenPayload: RefreshTokenPayload) -> RequestBuilder<AccessToken> {
         let localVariablePath = "/auth/refresh"
         let localVariableURLString = ApiVideoUploader.basePath + localVariablePath
         let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: refreshTokenPayload)

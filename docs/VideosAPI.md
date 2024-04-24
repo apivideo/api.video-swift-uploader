@@ -11,6 +11,7 @@ Method | HTTP request | Description
 # **upload**
 ```swift
     open class func upload(videoId: String, file: URL, completion: @escaping (_ data: Video?, _ error: Error?) -> Void)
+    open class func upload(videoId: String, file: URL, completion: @escaping (_ result: Swift.Result<Response<Video>, ErrorResponse>) -> Void)
 ```
 
 Upload a video
@@ -82,6 +83,7 @@ Name | Type | Description  | Notes
 # **uploadWithUploadToken**
 ```swift
     open class func uploadWithUploadToken(token: String, file: URL, completion: @escaping (_ data: Video?, _ error: Error?) -> Void)
+    open class func uploadWithUploadToken(token: String, file: URL, completion: @escaping (_ result: Swift.Result<Response<Video>, ErrorResponse>) -> Void)
 ```
 
 Upload with an delegated upload token

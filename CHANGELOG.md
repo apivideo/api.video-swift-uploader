@@ -1,6 +1,9 @@
 # Changelog
 All changes to this project will be documented in this file.
 
+## [1.2.3] - 2024-04-25
+- Add API to get rate limiting headers
+
 ## [1.2.2] - 2023-08-25
 - Fix progressive upload with upload token and video id
 

@@ -101,8 +101,8 @@ VideosAPI
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**upload**](https://github.com/apivideo/api.video-swift-uploader/blob/main/docs/VideosAPI.md#upload) | **POST** /videos/{videoId}/source | Upload a video
-[**uploadWithUploadToken**](https://github.com/apivideo/api.video-swift-uploader/blob/main/docs/VideosAPI.md#uploadWithUploadToken) | **POST** /upload | Upload with an delegated upload token
+[**upload**](https://github.com/apivideo/api.video-swift-uploader/blob/main/docs/VideosAPI.md#upload) | **POST** `/videos/{videoId}/source` | Upload a video
+[**uploadWithUploadToken**](https://github.com/apivideo/api.video-swift-uploader/blob/main/docs/VideosAPI.md#uploadWithUploadToken) | **POST** `/upload` | Upload with an delegated upload token
 
 
 

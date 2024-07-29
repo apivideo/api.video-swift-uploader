@@ -77,10 +77,6 @@ public struct APIHelper {
                 result.append(URLQueryItem(name: item.key, value: "\(value)"))
             }
         }
-
-        if destination.isEmpty {
-            return nil
-        }
         return destination
     }
 }

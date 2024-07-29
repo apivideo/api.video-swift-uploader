@@ -395,6 +395,7 @@ The latter allows you to split a video source into X chunks and send those chunk
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "token": token.encodeToJSON(),
         ])
+        
 
         var localVariableNillableHeaders: [String: Any?] = [
             "Content-Type": "multipart/form-data",
@@ -440,6 +441,8 @@ The latter allows you to split a video source into X chunks and send those chunk
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "token": token.encodeToJSON(),
         ])
+
+    
 
         var localVariableNillableHeaders: [String: Any?] = [
             "Content-Type": "multipart/form-data",

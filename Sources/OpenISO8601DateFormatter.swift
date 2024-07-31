@@ -35,6 +35,10 @@ public class OpenISO8601DateFormatter: DateFormatter {
         setup()
     }
 
+    override public func string(from date: Date) -> String {
+        return OpenISO8601DateFormatter.withoutSeconds.string(from: date)
+    }
+
     override public func date(from string: String) -> Date? {
         if let result = super.date(from: string) {
             return result

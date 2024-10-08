@@ -12,6 +12,10 @@ import AnyCodable
 
 public struct Video: Codable, Hashable {
 
+    public enum LanguageOrigin: String, Codable, CaseIterable {
+        case api = "api"
+        case auto = "auto"
+    }
     /** The unique identifier of the video object. */
     public var videoId: String
     /** When a video was created, presented in ATOM UTC format. */
@@ -30,6 +34,10 @@ public struct Video: Codable, Hashable {
     public var deletesAt: Date?
     /** Returns `true` for videos you discarded when you have the Video Restore feature enabled. Returns `false` for every other video. */
     public var discarded: Bool?
+    /** Returns the language of a video in [IETF language tag](https://en.wikipedia.org/wiki/IETF_language_tag) format. You can set the language during video creation via the API, otherwise it is detected automatically. */
+    public var language: String?
+    /** Returns the origin of the last update on the video's `language` attribute.  - `api` means that the last update was requested from the API. - `auto` means that the last update was done automatically by the API. */
+    public var languageOrigin: LanguageOrigin?
     /** One array of tags (each tag is a string) in order to categorize a video. Tags may include spaces.   */
     public var tags: [String]?
     /** Metadata you can use to categorise and filter videos. Metadata is a list of dictionaries, where each dictionary represents a key value pair for categorising a video.  */
@@ -45,7 +53,7 @@ public struct Video: Codable, Hashable {
     /** This lets you know whether mp4 is supported. If enabled, an mp4 URL will be provided in the response for the video.  */
     public var mp4Support: Bool?
 
-    public init(videoId: String, createdAt: Date? = nil, title: String? = nil, description: String? = nil, publishedAt: Date? = nil, updatedAt: Date? = nil, discardedAt: Date? = nil, deletesAt: Date? = nil, discarded: Bool? = nil, tags: [String]? = nil, metadata: [Metadata]? = nil, source: VideoSource? = nil, assets: VideoAssets? = nil, playerId: String? = nil, _public: Bool? = nil, panoramic: Bool? = nil, mp4Support: Bool? = nil) {
+    public init(videoId: String, createdAt: Date? = nil, title: String? = nil, description: String? = nil, publishedAt: Date? = nil, updatedAt: Date? = nil, discardedAt: Date? = nil, deletesAt: Date? = nil, discarded: Bool? = nil, language: String? = nil, languageOrigin: LanguageOrigin? = nil, tags: [String]? = nil, metadata: [Metadata]? = nil, source: VideoSource? = nil, assets: VideoAssets? = nil, playerId: String? = nil, _public: Bool? = nil, panoramic: Bool? = nil, mp4Support: Bool? = nil) {
         self.videoId = videoId
         self.createdAt = createdAt
         self.title = title
@@ -55,6 +63,8 @@ public struct Video: Codable, Hashable {
         self.discardedAt = discardedAt
         self.deletesAt = deletesAt
         self.discarded = discarded
+        self.language = language
+        self.languageOrigin = languageOrigin
         self.tags = tags
         self.metadata = metadata
         self.source = source
@@ -75,6 +85,8 @@ public struct Video: Codable, Hashable {
         case discardedAt
         case deletesAt
         case discarded
+        case language
+        case languageOrigin
         case tags
         case metadata
         case source
@@ -98,6 +110,8 @@ public struct Video: Codable, Hashable {
         try container.encodeIfPresent(discardedAt, forKey: .discardedAt)
         try container.encodeIfPresent(deletesAt, forKey: .deletesAt)
         try container.encodeIfPresent(discarded, forKey: .discarded)
+        try container.encodeIfPresent(language, forKey: .language)
+        try container.encodeIfPresent(languageOrigin, forKey: .languageOrigin)
         try container.encodeIfPresent(tags, forKey: .tags)
         try container.encodeIfPresent(metadata, forKey: .metadata)
         try container.encodeIfPresent(source, forKey: .source)

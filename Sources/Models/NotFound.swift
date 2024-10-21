@@ -12,9 +12,13 @@ import AnyCodable
 
 public struct NotFound: Codable, Hashable {
 
+    /** A link to the error documentation. */
     public var type: String?
+    /** A description of the error that occurred. */
     public var title: String?
+    /** The name of the parameter that caused the error. */
     public var name: String?
+    /** The HTTP status code. */
     public var status: Int?
 
     public init(type: String? = nil, title: String? = nil, name: String? = nil, status: Int? = nil) {

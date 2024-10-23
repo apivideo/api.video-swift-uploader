@@ -1,6 +1,9 @@
 # Changelog
 All changes to this project will be documented in this file.
 
+## [1.2.5] - 2024-10-21
+- Add support for Alamofire 5.10
+
 ## [1.2.4] - 2024-10-08
 - Add transcript feature
 
